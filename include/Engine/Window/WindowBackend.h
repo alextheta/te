@@ -10,7 +10,7 @@ namespace TE
     class WindowBackend
     {
     public:
-        virtual ~WindowBackend() = 0;
+        virtual ~WindowBackend() = default;
         virtual bool Init(WindowSettings *windowSettings) = 0;
         virtual bool PollEvents() = 0;
         virtual void Show() = 0;

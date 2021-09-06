@@ -9,7 +9,7 @@ namespace TE
     class RenderBackend
     {
     public:
-        virtual ~RenderBackend() = 0;
+        virtual ~RenderBackend() = default;
         virtual bool Init(WindowBackend *windowBackend) = 0;
 
         virtual void Clear() = 0;

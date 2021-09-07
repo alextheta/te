@@ -14,6 +14,7 @@ namespace TE
         }
 
         _renderBackend = std::unique_ptr<RenderBackend>(backend);
+        _renderApiType = _renderBackend->GetApiType();
     }
 
     Render::~Render()
@@ -34,9 +35,13 @@ namespace TE
         return  _renderBackend->Init(window->GetBackend());
     }
 
-    void Render::Draw()
+    void Render::Clear()
     {
         _renderBackend->Clear();
+    }
+
+    void Render::Draw()
+    {
         _renderBackend->ProcessSwapChain();
     }
 }

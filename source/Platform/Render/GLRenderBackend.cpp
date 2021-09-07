@@ -9,6 +9,7 @@ namespace TE
 {
     GLRenderBackend::GLRenderBackend(int openGLMajorVersion, int openGLMinorVersion)
     {
+        _renderApiType = OpenGL;
         _majorVersion = openGLMajorVersion;
         _minorVersion = openGLMinorVersion;
         Logger::Instance().Message(std::format("RenderBackend: GLRenderBackend {}.{}", openGLMajorVersion, openGLMinorVersion));

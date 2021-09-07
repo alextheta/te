@@ -6,7 +6,7 @@
 
 namespace TE
 {
-    GLShaderProgram::GLShaderProgram(std::string name, std::initializer_list<Shader*> shaders) : ShaderProgram(name, shaders)
+    GLShaderProgram::GLShaderProgram(const std::string &name, const std::initializer_list<std::shared_ptr<Shader>> &shaders) : ShaderProgram(name, shaders)
     {
         _id = glCreateProgram();
 
@@ -20,7 +20,7 @@ namespace TE
                 return;
             }
 
-            GLShader *glShader = static_cast<GLShader*>(shader);
+            auto glShader = static_pointer_cast<GLShader>(shader);
             glAttachShader(_id, glShader->GetId());
         }
 
@@ -50,5 +50,10 @@ namespace TE
     void GLShaderProgram::Unbind()
     {
         glUseProgram(0);
+    }
+
+    bool GLShaderProgram::IsValid()
+    {
+        return _id != NULL;
     }
 }

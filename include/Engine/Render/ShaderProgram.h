@@ -11,10 +11,13 @@ namespace TE
     public:
         std::string name;
 
-        ShaderProgram(std::string name, std::initializer_list<Shader*> shaders);
+        ShaderProgram(const std::string &name, const std::initializer_list<std::shared_ptr<Shader>> &shaders);
         virtual ~ShaderProgram() = default;
 
         virtual void Bind() = 0;
         virtual void Unbind() = 0;
+        virtual bool IsValid() = 0;
+
+        static std::shared_ptr<ShaderProgram> Create(const std::string &name, const std::initializer_list<std::shared_ptr<Shader>> &shaders);
     };
 }

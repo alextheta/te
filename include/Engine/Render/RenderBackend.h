@@ -6,6 +6,12 @@
 
 namespace TE
 {
+    enum RenderApiType
+    {
+        Unknown,
+        OpenGL
+    };
+
     class RenderBackend
     {
     public:
@@ -14,5 +20,10 @@ namespace TE
 
         virtual void Clear() = 0;
         virtual void ProcessSwapChain() = 0;
+
+        inline RenderApiType GetApiType() { return _renderApiType; };
+
+    protected:
+        RenderApiType _renderApiType;
     };
 }

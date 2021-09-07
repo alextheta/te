@@ -33,7 +33,7 @@ namespace TE
             glGetShaderiv(_id, GL_INFO_LOG_LENGTH, &compileLogLength);
             GLchar *compileError = new GLchar [compileLogLength];
             glGetShaderInfoLog(_id, compileLogLength, nullptr, &compileError[0]);
-            Logger::Instance().Message(std::format("GLSL:\n{}", compileError), Logger::Warning);
+            Logger::Instance().Message(std::format("Shader \"{}\" GLSL error:\n{}", name, compileError), Logger::Warning);
             glDeleteShader(_id);
             _id = NULL;
         }

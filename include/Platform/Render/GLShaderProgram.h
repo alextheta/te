@@ -9,11 +9,12 @@ namespace TE
     class GLShaderProgram : public ShaderProgram
     {
     public:
-        GLShaderProgram(std::string name, std::initializer_list<Shader*> shaders);
+        GLShaderProgram(const std::string &name, const std::initializer_list<std::shared_ptr<Shader>> &shaders);
         ~GLShaderProgram();
 
         void Bind();
         void Unbind();
+        bool IsValid();
 
     private:
         GLuint _id;

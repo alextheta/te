@@ -14,9 +14,13 @@ namespace TE
         ~Render();
         bool Init(Window *window);
 
+        void Clear();
         void Draw();
+
+        inline static RenderApiType GetApiType() { return _renderApiType; };
 
     private:
         std::unique_ptr<RenderBackend> _renderBackend;
+        inline static RenderApiType _renderApiType = Unknown;
     };
 }

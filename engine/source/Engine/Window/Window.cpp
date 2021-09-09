@@ -5,11 +5,11 @@ namespace TE
 {
     Window::Window(WindowBackend *backend)
     {
-        Logger::Instance().Message("Window: instantiate");
+        Logger::Message("Window: instantiate");
 
         if (!backend)
         {
-            Logger::Instance().Message("Window: backend is null", Logger::Error);
+            Logger::Message("Window: backend is null", Logger::Error);
             return;
         }
 
@@ -18,16 +18,16 @@ namespace TE
 
     Window::~Window()
     {
-        Logger::Instance().Message("Window: destroy");
+        Logger::Message("Window: destroy");
     }
 
     bool Window::Init(WindowSettings *settings)
     {
-        Logger::Instance().Message("Window: init");
+        Logger::Message("Window: init");
 
         if (!settings)
         {
-            Logger::Instance().Message("Window: settings is null", Logger::Error);
+            Logger::Message("Window: settings is null", Logger::Error);
             return false;
         }
 

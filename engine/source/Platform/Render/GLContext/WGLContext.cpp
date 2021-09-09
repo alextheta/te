@@ -13,14 +13,14 @@ namespace TE
 
     WGLContext::WGLContext(WindowHandle *windowHandle) : GLContext(windowHandle)
     {
-        Logger::Instance().Message("GLContext: WGLContext");
+        Logger::Message("GLContext: WGLContext");
 
         _windowHandle = dynamic_cast<Win32WindowHandle *>(windowHandle);
     }
 
     WGLContext::~WGLContext()
     {
-        Logger::Instance().Message("GLContext: destroy");
+        Logger::Message("GLContext: destroy");
 
         HWND hWindow = static_cast<HWND>(_windowHandle->GetHandle());
 
@@ -30,7 +30,7 @@ namespace TE
 
     bool WGLContext::Init(int openGLMajorVersion, int openGLMinorVersion)
     {
-        Logger::Instance().Message("GLContext: init");
+        Logger::Message("GLContext: init");
 
         if (!InitExtensions())
         {
@@ -39,7 +39,7 @@ namespace TE
 
         if (!gl3wIsSupported(openGLMajorVersion, openGLMinorVersion))
         {
-            Logger::Instance().Message(std::format("GLContext: OpenGL version {}.{} is not supported", openGLMajorVersion, openGLMinorVersion), Logger::Error);
+            Logger::Message(std::format("GLContext: OpenGL version {}.{} is not supported", openGLMajorVersion, openGLMinorVersion), Logger::Error);
             return false;
         }
 
@@ -47,7 +47,7 @@ namespace TE
         _displayContext = GetDC(hWindow);
         if (!_displayContext)
         {
-            Logger::Instance().Message(std::format("GLContext: window display context fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("GLContext: window display context fail {}", GetLastError()), Logger::Error);
             return false;
         }
 
@@ -78,43 +78,43 @@ namespace TE
         uint32_t formatCount;
         if (!wglChoosePixelFormatARB(_displayContext, pixelFormatAttributes, nullptr, 1, &pixelFormat, &formatCount))
         {
-            Logger::Instance().Message(std::format("GLContext: choose pixel format fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("GLContext: choose pixel format fail {}", GetLastError()), Logger::Error);
             return false;
         }
 
         if (formatCount == 0)
         {
-            Logger::Instance().Message(std::format("GLContext: pixel format not found {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("GLContext: pixel format not found {}", GetLastError()), Logger::Error);
             return false;
         }
 
         PIXELFORMATDESCRIPTOR pixelFormatDescriptor;
         if (!DescribePixelFormat(_displayContext, pixelFormat, sizeof(pixelFormatDescriptor), &pixelFormatDescriptor))
         {
-            Logger::Instance().Message(std::format("GLContext: pixel format validation fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("GLContext: pixel format validation fail {}", GetLastError()), Logger::Error);
             return false;
         }
 
         if (!SetPixelFormat(_displayContext, pixelFormat, &pixelFormatDescriptor))
         {
-            Logger::Instance().Message(std::format("GLContext: set pixel format fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("GLContext: set pixel format fail {}", GetLastError()), Logger::Error);
             return false;
         }
 
         _renderContext = wglCreateContextAttribsARB(_displayContext, nullptr, contextAttributes);
         if (!_renderContext)
         {
-            Logger::Instance().Message(std::format("GLContext: context creation fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("GLContext: context creation fail {}", GetLastError()), Logger::Error);
             return false;
         }
 
         if (!wglMakeCurrent(_displayContext, _renderContext))
         {
-            Logger::Instance().Message(std::format("GLContext: context setup fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("GLContext: context setup fail {}", GetLastError()), Logger::Error);
             return false;
         }
 
-        Logger::Instance().Message(std::format("GLContext: {} {}", (const char *)glGetString(GL_VENDOR), (const char *)glGetString(GL_VERSION)), Logger::Info);
+        Logger::Message(std::format("GLContext: {} {}", (const char *)glGetString(GL_VENDOR), (const char *)glGetString(GL_VERSION)), Logger::Info);
 
         return true;
     }
@@ -146,7 +146,7 @@ namespace TE
 
         if (!RegisterClassEx(&windowClass))
         {
-            Logger::Instance().Message(std::format("GLContext: [ext] window class fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("GLContext: [ext] window class fail {}", GetLastError()), Logger::Error);
             return false;
         }
 
@@ -159,14 +159,14 @@ namespace TE
 
         if (!tempExtensionWindow)
         {
-            Logger::Instance().Message(std::format("GLContext: [ext] window init fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("GLContext: [ext] window init fail {}", GetLastError()), Logger::Error);
             return false;
         }
 
         HDC tempDisplayContext = GetDC(tempExtensionWindow);
         if (!tempDisplayContext)
         {
-            Logger::Instance().Message(std::format("GLContext: [ext] window display context fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("GLContext: [ext] window display context fail {}", GetLastError()), Logger::Error);
             return false;
         }
 
@@ -184,38 +184,38 @@ namespace TE
         int pixelFormat = ChoosePixelFormat(tempDisplayContext, &pixelFormatDescriptor);
         if (pixelFormat == 0)
         {
-            Logger::Instance().Message(std::format("GLContext: [ext] choose pixel format fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("GLContext: [ext] choose pixel format fail {}", GetLastError()), Logger::Error);
             return false;
         }
 
         if (!DescribePixelFormat(tempDisplayContext, pixelFormat, sizeof(pixelFormatDescriptor), &pixelFormatDescriptor))
         {
-            Logger::Instance().Message(std::format("GLContext: [ext] pixel format validation fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("GLContext: [ext] pixel format validation fail {}", GetLastError()), Logger::Error);
             return false;
         }
 
         if (!SetPixelFormat(tempDisplayContext, pixelFormat, &pixelFormatDescriptor))
         {
-            Logger::Instance().Message(std::format("GLContext: [ext] set pixel format fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("GLContext: [ext] set pixel format fail {}", GetLastError()), Logger::Error);
             return false;
         }
 
         HGLRC tempRenderContext = wglCreateContext(tempDisplayContext);
         if (!tempRenderContext)
         {
-            Logger::Instance().Message(std::format("GLContext: [ext] context creation fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("GLContext: [ext] context creation fail {}", GetLastError()), Logger::Error);
             return false;
         }
 
         if (!wglMakeCurrent(tempDisplayContext, tempRenderContext))
         {
-            Logger::Instance().Message(std::format("GLContext: [ext] context setup fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("GLContext: [ext] context setup fail {}", GetLastError()), Logger::Error);
             return false;
         }
 
         if (!BindExtensions())
         {
-            Logger::Instance().Message("GLContext: [ext] extension bind fail", Logger::Error);
+            Logger::Message("GLContext: [ext] extension bind fail", Logger::Error);
             return false;
         }
 
@@ -234,21 +234,21 @@ namespace TE
         wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)(gl3wGetProcAddress("wglChoosePixelFormatARB"));
         if (!wglChoosePixelFormatARB)
         {
-            Logger::Instance().Message("GLContext: [ext bind] wglChoosePixelFormatARB fail", Logger::Error);
+            Logger::Message("GLContext: [ext bind] wglChoosePixelFormatARB fail", Logger::Error);
             return false;
         }
 
         wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)(gl3wGetProcAddress("wglCreateContextAttribsARB"));
         if (!wglCreateContextAttribsARB)
         {
-            Logger::Instance().Message("GLContext: [ext bind] wglCreateContextAttribsARB fail", Logger::Error);
+            Logger::Message("GLContext: [ext bind] wglCreateContextAttribsARB fail", Logger::Error);
             return false;
         }
 
         wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)(gl3wGetProcAddress("wglSwapIntervalEXT"));
         if (!wglSwapIntervalEXT)
         {
-            Logger::Instance().Message("GLContext: [ext bind] wglSwapIntervalEXT fail", Logger::Error);
+            Logger::Message("GLContext: [ext bind] wglSwapIntervalEXT fail", Logger::Error);
             return false;
         }
 

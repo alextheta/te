@@ -1,8 +1,11 @@
 #include <Windows.h>
+#include <format>
+#include <backends/imgui_impl_win32.h>
 
 #include <Engine/Logger.h>
 #include <Platform/Window/Win32WindowBackend.h>
-#include <format>
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, unsigned int msg, WPARAM wParam, LPARAM lParam);
 
 namespace TE
 {
@@ -10,12 +13,12 @@ namespace TE
 
     Win32WindowBackend::Win32WindowBackend()
     {
-        Logger::Instance().Message("WindowBackend: Win32WindowBackend");
+        Logger::Message("WindowBackend: Win32WindowBackend");
     }
 
     Win32WindowBackend::~Win32WindowBackend()
     {
-        Logger::Instance().Message("Win32WindowBackend: destroy");
+        Logger::Message("Win32WindowBackend: destroy");
 
         HWND hWindow = static_cast<HWND>(GetWindowHandle()->GetHandle());
         HMODULE hInstance = GetModuleHandle(nullptr);
@@ -26,18 +29,18 @@ namespace TE
 
     bool Win32WindowBackend::Init(WindowSettings *windowSettings)
     {
-        Logger::Instance().Message("WindowBackend: init");
+        Logger::Message("WindowBackend: init");
 
         if (!windowSettings)
         {
-            Logger::Instance().Message("WindowBackend: window settings is null", Logger::Error);
+            Logger::Message("WindowBackend: window settings is null", Logger::Error);
             return false;
         }
 
         _windowHandle = std::unique_ptr<WindowHandle>(MakeWindow(windowSettings));
         if (!_windowHandle)
         {
-            Logger::Instance().Message("WindowBackend: window init fail", Logger::Error);
+            Logger::Message("WindowBackend: window init fail", Logger::Error);
             return false;
         }
 
@@ -54,7 +57,7 @@ namespace TE
             return true;
         }
 
-        Logger::Instance().Message("WindowBackend: window is closed");
+        Logger::Message("WindowBackend: window is closed");
         return false;
     }
 
@@ -65,6 +68,9 @@ namespace TE
 
     LRESULT Win32WindowBackend::WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wparam, LPARAM lparam)
     {
+        if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wparam, lparam))
+            return true;
+
         switch (msg)
         {
             case WM_CREATE:
@@ -86,7 +92,7 @@ namespace TE
         HMODULE hInstance = GetModuleHandle(nullptr);
         if (!hInstance)
         {
-            Logger::Instance().Message(std::format("WindowBackend: instance handle is null {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("WindowBackend: instance handle is null {}", GetLastError()), Logger::Error);
             return nullptr;
         }
 
@@ -107,14 +113,14 @@ namespace TE
 
         if (!RegisterClassEx(&windowClass))
         {
-            Logger::Instance().Message(std::format("WindowBackend: class registration fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("WindowBackend: class registration fail {}", GetLastError()), Logger::Error);
             return nullptr;
         }
 
         RECT desktopRect;
         if (!GetWindowRect(GetDesktopWindow(), &desktopRect))
         {
-            Logger::Instance().Message(std::format("WindowBackend: desktop rect obtain fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("WindowBackend: desktop rect obtain fail {}", GetLastError()), Logger::Error);
             return nullptr;
         }
 
@@ -130,7 +136,7 @@ namespace TE
 
         if (!hWindow)
         {
-            Logger::Instance().Message(std::format("WindowBackend: window init fail {}", GetLastError()), Logger::Error);
+            Logger::Message(std::format("WindowBackend: window init fail {}", GetLastError()), Logger::Error);
             return nullptr;
         }
 

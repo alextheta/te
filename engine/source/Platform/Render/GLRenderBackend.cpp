@@ -12,21 +12,21 @@ namespace TE
         _renderApiType = OpenGL;
         _majorVersion = openGLMajorVersion;
         _minorVersion = openGLMinorVersion;
-        Logger::Instance().Message(std::format("RenderBackend: GLRenderBackend {}.{}", openGLMajorVersion, openGLMinorVersion));
+        Logger::Message(std::format("RenderBackend: GLRenderBackend {}.{}", openGLMajorVersion, openGLMinorVersion));
     }
 
     GLRenderBackend::~GLRenderBackend()
     {
-        Logger::Instance().Message("RenderBackend: destroy");
+        Logger::Message("RenderBackend: destroy");
     }
 
     bool GLRenderBackend::Init(WindowBackend *windowBackend)
     {
-        Logger::Instance().Message("RenderBackend: init");
+        Logger::Message("RenderBackend: init");
 
         if (!windowBackend)
         {
-            Logger::Instance().Message("RenderBackend: window backend is null", Logger::Error);
+            Logger::Message("RenderBackend: window backend is null", Logger::Error);
             return false;
         }
 
@@ -34,13 +34,13 @@ namespace TE
 
         if (_context == nullptr)
         {
-            Logger::Instance().Message("RenderBackend: context solve fail", Logger::Error);
+            Logger::Message("RenderBackend: context solve fail", Logger::Error);
             return false;
         }
 
         if (!_context->Init(_majorVersion, _minorVersion))
         {
-            Logger::Instance().Message("RenderBackend: context init fail", Logger::Error);
+            Logger::Message("RenderBackend: context init fail", Logger::Error);
             return false;
         }
 

@@ -15,7 +15,7 @@ namespace TE
         {
             if (!shader->IsValid())
             {
-                Logger::Instance().Message(std::format("ShaderProgram \"{}\": shader \"{}\" is invalid", name, shader->name), Logger::Warning);
+                Logger::Message(std::format("ShaderProgram \"{}\": shader \"{}\" is invalid", name, shader->name), Logger::Warning);
                 glDeleteProgram(_id);
                 _id = NULL;
                 return;
@@ -36,7 +36,7 @@ namespace TE
             auto compileError = std::make_unique<GLchar[]>(compileLogLength);
             glGetProgramInfoLog(_id, compileLogLength, nullptr, &compileError[0]);
 
-            Logger::Instance().Message(std::format("ShaderProgram \"{}\": link fail: {} ", name, &compileError[0]), Logger::Warning);
+            Logger::Message(std::format("ShaderProgram \"{}\": link fail: {} ", name, &compileError[0]), Logger::Warning);
 
             glDeleteProgram(_id);
             _id = NULL;

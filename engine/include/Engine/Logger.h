@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <deque>
 #include <string>
 
@@ -16,17 +17,13 @@ namespace TE
             Fatal
         };
 
-        static Logger &Instance()
-        {
-            static Logger Self;
-            return Self;
-        }
+        Logger(std::ostream *stream, bool printSeverity, bool printTime);
 
         void SetOutputStream(std::ostream *stream);
         void SetSeverityPrinting(bool state);
         void SetTimePrinting(bool state);
 
-        void Message(std::string message, Severity severityLevel = Info);
+        static void Message(std::string message, Severity severityLevel = Info);
 
         std::string GetLastMessage();
 
@@ -41,17 +38,15 @@ namespace TE
         };
 
     private:
-        Logger();
-        Logger(const Logger &LogObject) = delete;
-        Logger &operator=(const Logger &) = delete;
+        //Logger();
 
-        ~Logger()
-        {
-        };
+        inline static std::unique_ptr<TE::Logger> _loggerInstance;
 
         bool _printSeverityLevel;
         bool _printTime;
         std::ostream *_osStream;
         std::deque<std::string> _logHistory;
+
+        void PushMessage(std::string message, Severity severityLevel = Info);
     };
 }

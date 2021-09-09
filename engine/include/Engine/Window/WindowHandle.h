@@ -5,7 +5,7 @@ namespace TE
     class WindowHandle
     {
     public:
-        virtual ~WindowHandle() = 0;
+        virtual ~WindowHandle() = default;
         virtual void *GetHandle() = 0;
     };
 }

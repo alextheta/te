@@ -5,6 +5,7 @@
 #include <Engine/Logger.h>
 
 #include <Platform/Render/GLShader.h>
+#include <Engine/Core.h>
 
 namespace TE
 {
@@ -26,7 +27,7 @@ namespace TE
             }
         }
 
-        Logger::Instance().Message(std::format("Shader \"{}\": unknown render api", name), Logger::Error);
+        Logger::Message(std::format("Shader \"{}\": unknown render api", name), Logger::Error);
         return nullptr;
     }
 }

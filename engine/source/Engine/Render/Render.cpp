@@ -1,15 +1,16 @@
 #include <Engine/Render/Render.h>
 #include <Engine/Logger.h>
+#include <Engine/Core.h>
 
 namespace TE
 {
     Render::Render(RenderBackend *backend)
     {
-        Logger::Instance().Message("Render: instantiate");
+        Logger::Message("Render: instantiate");
 
         if (!backend)
         {
-            Logger::Instance().Message("Render: backend is null", Logger::Error);
+            Logger::Message("Render: backend is null", Logger::Error);
             return;
         }
 
@@ -19,16 +20,16 @@ namespace TE
 
     Render::~Render()
     {
-        Logger::Instance().Message("Render: destroy");
+        Logger::Message("Render: destroy");
     }
 
     bool Render::Init(Window *window)
     {
-        Logger::Instance().Message("Render: init");
+        Logger::Message("Render: init");
 
         if (!window)
         {
-            Logger::Instance().Message("Render: window is null", Logger::Error);
+            Logger::Message("Render: window is null", Logger::Error);
             return false;
         }
 

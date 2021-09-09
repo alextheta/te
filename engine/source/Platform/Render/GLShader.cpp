@@ -34,7 +34,7 @@ namespace TE
             auto compileError = std::make_unique<GLchar[]>(compileLogLength);
             glGetShaderInfoLog(_id, compileLogLength, nullptr, &compileError[0]);
 
-            Logger::Instance().Message(std::format("Shader \"{}\" GLSL error:\n{}", name, &compileError[0]), Logger::Warning);
+            Logger::Message(std::format("Shader \"{}\" GLSL error:\n{}", name, &compileError[0]), Logger::Warning);
 
             glDeleteShader(_id);
             _id = NULL;

@@ -24,7 +24,7 @@ namespace TE
         }
         else
         {
-            Logger::Instance().Message("VertexBuffer: unknown render api", Logger::Error);
+            Logger::Message("VertexBuffer: unknown render api", Logger::Error);
         }
 
         return vertexBuffer;

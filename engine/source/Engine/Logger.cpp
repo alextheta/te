@@ -5,11 +5,12 @@
 
 namespace TE
 {
-    Logger::Logger()
+    Logger::Logger(std::ostream *stream, bool printSeverity, bool printTime)
     {
-        _printSeverityLevel = false;
-        _printTime = false;
-        _osStream = nullptr;
+        _printSeverityLevel = printSeverity;
+        _printTime = printTime;
+        _osStream = stream;
+        _loggerInstance = std::unique_ptr<Logger>(this);
         Clear();
     }
 
@@ -29,6 +30,11 @@ namespace TE
     }
 
     void Logger::Message(std::string message, Severity severityLevel)
+    {
+        _loggerInstance->PushMessage(message, severityLevel);
+    }
+
+    void Logger::PushMessage(std::string message, Severity severityLevel)
     {
         std::string sTime = "";
         std::string sSeverity = "";

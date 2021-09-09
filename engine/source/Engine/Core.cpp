@@ -3,21 +3,22 @@
 #include <Engine/Logger.h>
 #include <Engine/Core.h>
 
+
 namespace TE
 {
     Core::Core(WindowBackend *windowBackend, RenderBackend *renderBackend)
     {
-        Logger::Instance().Message("Core: instantiate");
+        Logger::Message("Core: instantiate");
 
         if (!windowBackend)
         {
-            Logger::Instance().Message("Core: window backend is null");
+            Logger::Message("Core: window backend is null");
             return;
         }
 
         if (!renderBackend)
         {
-            Logger::Instance().Message("Core: render backend is null");
+            Logger::Message("Core: render backend is null");
             return;
         }
 
@@ -27,23 +28,23 @@ namespace TE
 
     Core::~Core()
     {
-        Logger::Instance().Message("Core: destroy");
+        Logger::Message("Core: destroy");
         _render.reset();
     }
 
     bool Core::Init(WindowSettings *windowSettings)
     {
-        Logger::Instance().Message("Core: init");
+        Logger::Message("Core: init");
 
         if (!_window->Init(windowSettings))
         {
-            Logger::Instance().Message("Core: window init fail", Logger::Error);
+            Logger::Message("Core: window init fail", Logger::Error);
             return false;
         }
 
         if (!_render->Init(_window.get()))
         {
-            Logger::Instance().Message("Core: render init fail", Logger::Error);
+            Logger::Message("Core: render init fail", Logger::Error);
             return false;
         }
 
@@ -56,12 +57,13 @@ namespace TE
     {
         if (!_window || !_render)
         {
-            Logger::Instance().Message("Core: unable to run", Logger::Error);
+            Logger::Message("Core: unable to run", Logger::Error);
             return;
         }
 
         while (_window->PollEvents())
         {
+            _render->Clear();
             _render->Draw();
         }
     }

@@ -14,6 +14,9 @@ include_directories(dependencies/GL3W/include)
 file(GLOB_RECURSE LIB_GL3W dependencies/GL3W/src/*.c)
 add_library(gl3w ${LIB_GL3W})
 
+# glm
+include_directories(dependencies/glm/)
+
 # Engine
 include_directories(include)
 

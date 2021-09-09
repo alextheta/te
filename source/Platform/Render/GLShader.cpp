@@ -19,7 +19,7 @@ namespace TE
                 glShaderType = GL_VERTEX_SHADER;
                 break;
             case Fragment:
-                glShaderType = GL_VERTEX_SHADER;
+                glShaderType = GL_FRAGMENT_SHADER;
                 break;
         }
 

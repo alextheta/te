@@ -1,3 +1,4 @@
+#include <vector>
 #include <format>
 
 #include <Platform/Render/GLShaderProgram.h>
@@ -30,7 +31,13 @@ namespace TE
         glGetProgramiv(_id, GL_LINK_STATUS, &linkStatus);
         if (linkStatus != GL_TRUE)
         {
-            Logger::Instance().Message(std::format("ShaderProgram \"{}\": failed to link shaders", name), Logger::Warning);
+            GLint compileLogLength;
+            glGetProgramiv(_id, GL_INFO_LOG_LENGTH, &compileLogLength);
+            auto compileError = std::make_unique<GLchar[]>(compileLogLength);
+            glGetProgramInfoLog(_id, compileLogLength, nullptr, &compileError[0]);
+
+            Logger::Instance().Message(std::format("ShaderProgram \"{}\": link fail: {} ", name, &compileError[0]), Logger::Warning);
+
             glDeleteProgram(_id);
             _id = NULL;
         }

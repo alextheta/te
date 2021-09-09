@@ -10,7 +10,6 @@ namespace TE
     {
         GLint compileResult = GL_FALSE;
         const char *sourcePtr = source.c_str();
-        int32_t compileLogLength;
         GLuint glShaderType;
 
         switch (_shaderType)
@@ -30,10 +29,13 @@ namespace TE
         glGetShaderiv(_id, GL_COMPILE_STATUS, &compileResult);
         if (compileResult != GL_TRUE)
         {
+            GLint compileLogLength;
             glGetShaderiv(_id, GL_INFO_LOG_LENGTH, &compileLogLength);
-            GLchar *compileError = new GLchar [compileLogLength];
+            auto compileError = std::make_unique<GLchar[]>(compileLogLength);
             glGetShaderInfoLog(_id, compileLogLength, nullptr, &compileError[0]);
-            Logger::Instance().Message(std::format("Shader \"{}\" GLSL error:\n{}", name, compileError), Logger::Warning);
+
+            Logger::Instance().Message(std::format("Shader \"{}\" GLSL error:\n{}", name, &compileError[0]), Logger::Warning);
+
             glDeleteShader(_id);
             _id = NULL;
         }

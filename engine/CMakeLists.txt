@@ -23,11 +23,6 @@ include_directories(dependencies/GL3W/include)
 file(GLOB_RECURSE LIB_GL3W dependencies/GL3W/src/*.c)
 add_library(gl3w STATIC ${LIB_GL3W})
 
-# ImGui
-include_directories(dependencies/imgui)
-file(GLOB LIB_IMGUI dependencies/imgui/*.cpp dependencies/imgui/backends/imgui_impl_opengl3.cpp dependencies/imgui/backends/imgui_impl_win32.cpp)
-add_library(imgui STATIC ${LIB_IMGUI})
-
 # TE render
 file(GLOB_RECURSE SRC_ENGINE_RENDER source/Engine/Render/*.cpp)
 file(GLOB_RECURSE SRC_PLATFORM_RENDER source/Platform/Render/*.cpp)

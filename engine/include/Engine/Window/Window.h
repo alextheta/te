@@ -1,8 +1,7 @@
 #pragma once
 
-#include <memory>
-
 #include <Engine/Window/WindowBackend.h>
+#include <Engine/Event/Event.h>
 
 namespace TE
 {
@@ -17,7 +16,11 @@ namespace TE
 
         WindowBackend *GetBackend();
 
+        Event<void()> WindowCloseEvent;
+
     private:
         std::unique_ptr<WindowBackend> _windowBackend;
+
+        void OnWindowClose();
     };
 }

@@ -4,6 +4,7 @@
 
 #include <Engine/Window/WindowSettings.h>
 #include <Engine/Window/WindowHandle.h>
+#include <Engine/Event/Event.h>
 
 namespace TE
 {
@@ -16,6 +17,8 @@ namespace TE
         virtual void Show() = 0;
 
         WindowHandle *GetWindowHandle();
+
+        inline static Event<void()> WindowCloseEvent;
 
     protected:
         std::unique_ptr<WindowHandle> _windowHandle;

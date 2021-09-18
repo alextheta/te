@@ -13,6 +13,8 @@ namespace TE
             return;
         }
 
+        backend->WindowCloseEvent.AddListener(&Window::OnWindowClose, this);
+
         _windowBackend = std::unique_ptr<WindowBackend>(backend);
     }
 
@@ -47,5 +49,10 @@ namespace TE
     WindowBackend *Window::GetBackend()
     {
         return _windowBackend.get();
+    }
+
+    void Window::OnWindowClose()
+    {
+        WindowCloseEvent();
     }
 }

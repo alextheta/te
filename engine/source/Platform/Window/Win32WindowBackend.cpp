@@ -1,11 +1,8 @@
 #include <Windows.h>
 #include <format>
-#include <backends/imgui_impl_win32.h>
 
 #include <Engine/Logger.h>
 #include <Platform/Window/Win32WindowBackend.h>
-
-extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, unsigned int msg, WPARAM wParam, LPARAM lParam);
 
 namespace TE
 {
@@ -68,9 +65,6 @@ namespace TE
 
     LRESULT Win32WindowBackend::WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wparam, LPARAM lparam)
     {
-        if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wparam, lparam))
-            return true;
-
         switch (msg)
         {
             case WM_CREATE:
@@ -79,6 +73,7 @@ namespace TE
                 PostQuitMessage(0);
                 break;
             case WM_CLOSE:
+                WindowCloseEvent();
                 DestroyWindow(hWnd);
                 break;
             default:

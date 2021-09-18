@@ -22,8 +22,8 @@ namespace TE
             return;
         }
 
-        _window = std::make_unique<Window>(windowBackend);
-        _render = std::make_unique<Render>(renderBackend);
+        _window = std::make_shared<Window>(windowBackend);
+        _render = std::make_shared<Render>(renderBackend);
     }
 
     Core::~Core()
@@ -53,18 +53,13 @@ namespace TE
         return true;
     }
 
-    void Core::Run()
+    std::shared_ptr<Window> Core::GetWindow()
     {
-        if (!_window || !_render)
-        {
-            Logger::Message("Core: unable to run", Logger::Error);
-            return;
-        }
+        return _window;
+    }
 
-        while (_window->PollEvents())
-        {
-            _render->Clear();
-            _render->Draw();
-        }
+    std::shared_ptr<Render> Core::GetRender()
+    {
+        return _render;
     }
 }

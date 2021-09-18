@@ -1,5 +1,7 @@
 #include <iostream>
 
+//#include <memory>
+
 #include <Engine/Application.h>
 #include <Platform/Window/Win32WindowBackend.h>
 #include <Platform/Render/GLRenderBackend.h>
@@ -9,7 +11,7 @@ namespace TE
 {
     Application::Application()
     {
-        auto logger = new Logger(&std::cout, true, true);
+        new Logger(&std::cout, true, true);
 
         _engineCore = std::make_unique<TE::Core>(
                 new Win32WindowBackend(),
@@ -23,19 +25,28 @@ namespace TE
         windowSettings->width = 800;
         windowSettings->height = 600;
 
-        if (_engineCore->Init(windowSettings.get()))
+        _engineCore->Init(windowSettings.get());
+
+        std::shared_ptr<Window> window = _engineCore->GetWindow();
+        std::shared_ptr<Render> render = _engineCore->GetRender();
+
+        window->WindowCloseEvent.AddListener(&Application::OnWindowClose, this);
+
+        Init();
+
+        _isRunning = true;
+        while (_isRunning)
         {
-            _engineCore->Run();
+            window->PollEvents();
+
+            Update();
         }
+
+        Dispose();
     }
 
-    Application::~Application()
+    void Application::OnWindowClose()
     {
-
-    }
-
-    Window *Application::GetWindow()
-    {
-        return _engineCore->GetWindow();
+        _isRunning = false;
     }
 }

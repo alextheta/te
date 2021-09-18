@@ -10,11 +10,14 @@ namespace TE
     public:
         Core(WindowBackend *windowBackend, RenderBackend *renderBackend);
         ~Core();
+
         bool Init(WindowSettings *windowSettings);
-        void Run();
+
+        std::shared_ptr<Window> GetWindow();
+        std::shared_ptr<Render> GetRender();
 
     private:
-        std::unique_ptr<Window> _window;
-        std::unique_ptr<Render> _render;
+        std::shared_ptr<Window> _window;
+        std::shared_ptr<Render> _render;
     };
 }

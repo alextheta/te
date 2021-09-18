@@ -10,6 +10,10 @@ namespace TE
     Application::Application()
     {
         auto logger = new Logger(&std::cout, true, true);
+
+        _engineCore = std::make_unique<TE::Core>(
+                new Win32WindowBackend(),
+                new GLRenderBackend(4, 6));
     }
 
     void Application::Run()
@@ -19,18 +23,19 @@ namespace TE
         windowSettings->width = 800;
         windowSettings->height = 600;
 
-        auto core = std::make_unique<TE::Core>(
-                new Win32WindowBackend(),
-                new GLRenderBackend(4, 6));
-
-        if (core->Init(windowSettings.get()))
+        if (_engineCore->Init(windowSettings.get()))
         {
-            core->Run();
+            _engineCore->Run();
         }
     }
 
     Application::~Application()
     {
 
+    }
+
+    Window *Application::GetWindow()
+    {
+        return _engineCore->GetWindow();
     }
 }

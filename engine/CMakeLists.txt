@@ -38,10 +38,14 @@ file(GLOB_RECURSE SRC_ENGINE_WINDOW source/Engine/Window/*.cpp)
 file(GLOB_RECURSE SRC_PLATFORM_WINDOW source/Platform/Window/*.cpp)
 add_library(window STATIC ${SRC_ENGINE_WINDOW} ${SRC_PLATFORM_WINDOW})
 
+# TE event
+file(GLOB_RECURSE SRC_ENGINE_EVENT source/Engine/Event/*.cpp)
+add_library(event STATIC ${SRC_ENGINE_EVENT})
+
 # TE engine
 file(GLOB SRC_ENGINE source/Engine/*.cpp)
 add_library(${PROJECT_NAME} SHARED ${SRC_ENGINE})
 
 # static lib
-target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL gl3w imgui window render)
+target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL gl3w imgui window render event)
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)

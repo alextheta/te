@@ -4,10 +4,11 @@
 
 #include <Engine/Render/RenderBackend.h>
 #include <Engine/Window/Window.h>
+#include <Engine/Common.h>
 
 namespace TE
 {
-    class Render
+    class TE_EXPORT Render
     {
     public:
         Render(RenderBackend *backend);
@@ -17,7 +18,7 @@ namespace TE
         void Clear();
         void Draw();
 
-        inline static RenderApiType GetApiType() { return _renderApiType; };
+        static RenderApiType GetApiType();
 
     private:
         std::unique_ptr<RenderBackend> _renderBackend;

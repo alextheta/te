@@ -1,11 +1,10 @@
 #include <iostream>
 
-//#include <memory>
-
 #include <Engine/Application.h>
+#include <Engine/Logger.h>
+
 #include <Platform/Window/Win32WindowBackend.h>
 #include <Platform/Render/GLRenderBackend.h>
-#include <Engine/Logger.h>
 
 namespace TE
 {
@@ -37,9 +36,12 @@ namespace TE
         _isRunning = true;
         while (_isRunning)
         {
-            window->PollEvents();
+            render->Clear();
 
+            window->PollEvents();
             Update();
+
+            render->Draw();
         }
 
         Dispose();
@@ -48,5 +50,15 @@ namespace TE
     void Application::OnWindowClose()
     {
         _isRunning = false;
+    }
+
+    std::shared_ptr<Window> Application::GetWindow()
+    {
+        return _engineCore->GetWindow();
+    }
+
+    std::shared_ptr<Render> Application::GetRender()
+    {
+        return _engineCore->GetRender();
     }
 }

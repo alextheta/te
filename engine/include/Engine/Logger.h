@@ -4,9 +4,11 @@
 #include <deque>
 #include <string>
 
+#include <Engine/Common.h>
+
 namespace TE
 {
-    class Logger
+    class TE_EXPORT Logger
     {
     public:
         enum Severity
@@ -38,9 +40,7 @@ namespace TE
         };
 
     private:
-        //Logger();
-
-        inline static std::unique_ptr<TE::Logger> _loggerInstance;
+        inline static std::unique_ptr<Logger> _loggerInstance;
 
         bool _printSeverityLevel;
         bool _printTime;

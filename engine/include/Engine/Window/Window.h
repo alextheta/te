@@ -11,7 +11,7 @@ namespace TE
         Window(WindowBackend *backend);
         ~Window();
         bool Init(WindowSettings *settings);
-        bool PollEvents();
+        void PollEvents();
         void Show();
 
         WindowBackend *GetBackend();

@@ -36,9 +36,9 @@ namespace TE
         return _windowBackend->Init(settings);
     }
 
-    bool Window::PollEvents()
+    void Window::PollEvents()
     {
-        return _windowBackend->PollEvents();
+        _windowBackend->PollEvents();
     }
 
     void Window::Show()

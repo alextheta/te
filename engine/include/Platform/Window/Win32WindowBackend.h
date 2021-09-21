@@ -12,7 +12,7 @@ namespace TE
         Win32WindowBackend();
         ~Win32WindowBackend();
         bool Init(WindowSettings *windowSettings);
-        bool PollEvents();
+        void PollEvents();
         void Show();
 
     private:

@@ -44,18 +44,13 @@ namespace TE
         return true;
     }
 
-    bool Win32WindowBackend::PollEvents()
+    void Win32WindowBackend::PollEvents()
     {
         MSG msg;
-        if (GetMessage(&msg, nullptr, 0, 0))
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-            return true;
-        }
+        PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE);
 
-        Logger::Message("WindowBackend: window is closed");
-        return false;
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
     }
 
     void Win32WindowBackend::Show()
@@ -67,8 +62,6 @@ namespace TE
     {
         switch (msg)
         {
-            case WM_CREATE:
-                break;
             case WM_DESTROY:
                 PostQuitMessage(0);
                 break;

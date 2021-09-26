@@ -7,16 +7,16 @@
 
 namespace TE
 {
-    class GLIndexBuffer : public IndexBuffer
+    class GLIndexBuffer final : public IndexBuffer
     {
     public:
         GLIndexBuffer(int32_t *indices, uint32_t count);
-        ~GLIndexBuffer();
+        virtual ~GLIndexBuffer() override;
 
-        uint32_t GetCount();
-        void Bind();
-        void Unbind();
-        bool IsValid();
+        virtual uint32_t GetCount() override;
+        virtual void Bind() override;
+        virtual void Unbind() override;
+        virtual bool IsValid() override;
 
     private:
         GLuint _id;

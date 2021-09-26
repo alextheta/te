@@ -6,13 +6,13 @@
 
 namespace TE
 {
-    class GLShader : public Shader
+    class GLShader final: public Shader
     {
     public:
         GLShader(const std::string &name, const std::string &source, ShaderType type);
-        ~GLShader();
+        virtual ~GLShader() override;
 
-        bool IsValid();
+        virtual bool IsValid() override;
         GLuint GetId();
 
     private:

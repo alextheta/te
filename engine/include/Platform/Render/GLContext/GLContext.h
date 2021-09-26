@@ -7,8 +7,7 @@ namespace TE
     class GLContext
     {
     public:
-        GLContext(TE::WindowHandle *windowHandle);
-        virtual ~GLContext() = 0;
+        virtual ~GLContext() = default;
         virtual bool Init(int openGLMajorVersion, int openGLMinorVersion) = 0;
 
         virtual void SetSwapInterval(int interval) = 0;

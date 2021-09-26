@@ -6,15 +6,15 @@
 
 namespace TE
 {
-    class GLShaderProgram : public ShaderProgram
+    class GLShaderProgram final: public ShaderProgram
     {
     public:
         GLShaderProgram(const std::string &name, const std::initializer_list<std::shared_ptr<Shader>> &shaders);
-        ~GLShaderProgram();
+        virtual ~GLShaderProgram() override;
 
-        void Bind();
-        void Unbind();
-        bool IsValid();
+        virtual void Bind() override;
+        virtual void Unbind() override;
+        virtual bool IsValid() override;
 
     private:
         GLuint _id;

@@ -11,7 +11,7 @@ namespace TE
     PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = nullptr;
     PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = nullptr;
 
-    WGLContext::WGLContext(WindowHandle *windowHandle) : GLContext(windowHandle)
+    WGLContext::WGLContext(WindowHandle *windowHandle)
     {
         Logger::Message("GLContext: WGLContext");
 
@@ -22,7 +22,7 @@ namespace TE
     {
         Logger::Message("GLContext: destroy");
 
-        HWND hWindow = static_cast<HWND>(_windowHandle->GetHandle());
+        HWND hWindow = static_cast<HWND>(_windowHandle->GetRawHandle());
 
         wglDeleteContext(_renderContext);
         ReleaseDC(hWindow, _displayContext);
@@ -43,7 +43,7 @@ namespace TE
             return false;
         }
 
-        HWND hWindow = static_cast<HWND>(_windowHandle->GetHandle());
+        HWND hWindow = static_cast<HWND>(_windowHandle->GetRawHandle());
         _displayContext = GetDC(hWindow);
         if (!_displayContext)
         {

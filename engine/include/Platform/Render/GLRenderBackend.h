@@ -5,15 +5,15 @@
 
 namespace TE
 {
-    class GLRenderBackend : public RenderBackend
+    class GLRenderBackend final: public RenderBackend
     {
     public:
         GLRenderBackend(int openGLMajorVersion, int openGLMinorVersion);
-        ~GLRenderBackend();
-        bool Init(WindowBackend *windowBackend);
+        virtual ~GLRenderBackend() override;
+        virtual bool Init(WindowBackend *windowBackend) override;
 
-        void Clear();
-        void ProcessSwapChain();
+        virtual void Clear() override;
+        virtual void ProcessSwapChain() override;
 
     private:
         std::unique_ptr<GLContext> _context;

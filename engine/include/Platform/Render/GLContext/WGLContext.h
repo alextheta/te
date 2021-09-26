@@ -7,15 +7,15 @@
 
 namespace TE
 {
-    class WGLContext : public GLContext
+    class WGLContext final : public GLContext
     {
     public:
         WGLContext(WindowHandle *windowHandle);
-        ~WGLContext();
-        bool Init(int openGLMajorVersion, int openGLMinorVersion);
+        virtual ~WGLContext() override;
+        virtual bool Init(int openGLMajorVersion, int openGLMinorVersion) override;
 
-        void SetSwapInterval(int interval);
-        void ProcessSwapChain();
+        virtual void SetSwapInterval(int interval)  override;
+        virtual void ProcessSwapChain() override;
 
     private:
         bool InitExtensions();

@@ -9,7 +9,7 @@ namespace TE
         _hWindow = hWnd;
     }
 
-    void *Win32WindowHandle::GetHandle()
+    void *Win32WindowHandle::GetRawHandle()
     {
         return _hWindow;
     }

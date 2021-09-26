@@ -17,7 +17,7 @@ namespace TE
     {
         Logger::Message("Win32WindowBackend: destroy");
 
-        HWND hWindow = static_cast<HWND>(GetWindowHandle()->GetHandle());
+        HWND hWindow = static_cast<HWND>(GetWindowHandle()->GetRawHandle());
         HMODULE hInstance = GetModuleHandle(nullptr);
 
         DestroyWindow(hWindow);
@@ -55,11 +55,21 @@ namespace TE
 
     void Win32WindowBackend::Show()
     {
-        ShowWindow(static_cast<HWND>(_windowHandle->GetHandle()), SW_SHOW);
+        ShowWindow(static_cast<HWND>(_windowHandle->GetRawHandle()), SW_SHOW);
+    }
+
+    void Win32WindowBackend::OverrideWindowProc(LRESULT (*WndProc)(HWND hWnd, unsigned int msg, WPARAM wparam, LPARAM lparam))
+    {
+        WindowProcedureOverride = WndProc;
     }
 
     LRESULT Win32WindowBackend::WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wparam, LPARAM lparam)
     {
+        if (WindowProcedureOverride != nullptr && WindowProcedureOverride(hWnd, msg, wparam, lparam))
+        {
+            return true;
+        }
+
         switch (msg)
         {
             case WM_DESTROY:

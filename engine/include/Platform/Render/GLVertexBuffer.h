@@ -6,16 +6,16 @@
 
 namespace TE
 {
-    class GLVertexBuffer : public VertexBuffer
+    class GLVertexBuffer final: public VertexBuffer
     {
     public:
         GLVertexBuffer();
-        ~GLVertexBuffer();
+        virtual ~GLVertexBuffer();
 
-        void SetData(const void* data, uint32_t size);
-        void Bind();
-        void Unbind();
-        bool IsValid();
+        virtual void SetData(const void* data, uint32_t size) override;
+        virtual void Bind() override;
+        virtual void Unbind() override;
+        virtual bool IsValid() override;
 
     private:
         GLuint _id;

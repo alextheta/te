@@ -38,10 +38,10 @@ namespace TE
         {
             render->Clear();
 
-            window->PollEvents();
             Update();
 
-            render->Draw();
+            window->PollEvents();
+            render->ProcessSwapChain();
         }
 
         Dispose();

@@ -5,11 +5,11 @@
 
 namespace TE
 {
-    class Win32WindowHandle : public WindowHandle
+    class Win32WindowHandle final: public WindowHandle
     {
     public:
         Win32WindowHandle(HWND hWnd);
-        void *GetHandle();
+        virtual void *GetRawHandle() override;
 
     private:
         HWND _hWindow;

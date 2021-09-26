@@ -70,8 +70,8 @@ namespace TE
             }
         }
 
-        template<typename ...CallbackArgs>
-        void operator()(CallbackArgs... args)
+        template<typename ReturnType, typename ...CallbackArgs>
+        ReturnType operator()(CallbackArgs... args)
         {
             for (auto const&[id, event] : _events)
             {

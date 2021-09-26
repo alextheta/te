@@ -41,7 +41,7 @@ namespace TE
             return false;
         }
 
-        return  _renderBackend->Init(window->GetBackend());
+        return _renderBackend->Init(window->GetBackend());
     }
 
     void Render::Clear()
@@ -49,7 +49,7 @@ namespace TE
         _renderBackend->Clear();
     }
 
-    void Render::Draw()
+    void Render::ProcessSwapChain()
     {
         _renderBackend->ProcessSwapChain();
     }

@@ -16,7 +16,7 @@ namespace TE
         bool Init(Window *window);
 
         void Clear();
-        void Draw();
+        void ProcessSwapChain();
 
         static RenderApiType GetApiType();
 

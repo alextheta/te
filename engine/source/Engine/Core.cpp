@@ -32,7 +32,7 @@ namespace TE
         _render.reset();
     }
 
-    bool Core::Init(WindowSettings *windowSettings)
+    bool Core::Init(WindowSettings &windowSettings)
     {
         Logger::Message("Core: init");
 
@@ -53,12 +53,12 @@ namespace TE
         return true;
     }
 
-    std::shared_ptr<Window> Core::GetWindow()
+    const std::shared_ptr<Window> Core::GetWindow()
     {
         return _window;
     }
 
-    std::shared_ptr<Render> Core::GetRender()
+    const std::shared_ptr<Render> Core::GetRender()
     {
         return _render;
     }

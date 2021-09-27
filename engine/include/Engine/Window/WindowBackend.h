@@ -12,11 +12,11 @@ namespace TE
     {
     public:
         virtual ~WindowBackend() = default;
-        virtual bool Init(WindowSettings *windowSettings) = 0;
+        virtual bool Init(WindowSettings &windowSettings) = 0;
         virtual void PollEvents() = 0;
         virtual void Show() = 0;
 
-        WindowHandle *GetWindowHandle();
+        const WindowHandle * const GetWindowHandle() const;
 
         inline static Event<void()> WindowCloseEvent;
 

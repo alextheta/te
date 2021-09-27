@@ -17,8 +17,8 @@ namespace TE
         virtual void Update() = 0;
         virtual void Dispose() = 0;
 
-        virtual std::shared_ptr<Window> GetWindow() final;
-        virtual std::shared_ptr<Render> GetRender() final;
+        virtual const std::shared_ptr<Window> GetWindow() final;
+        virtual const std::shared_ptr<Render> GetRender() final;
 
     private:
         std::unique_ptr<Core> _engineCore;

@@ -24,15 +24,9 @@ namespace TE
         UnregisterClass(WindowClassName.c_str(), hInstance);
     }
 
-    bool Win32WindowBackend::Init(WindowSettings *windowSettings)
+    bool Win32WindowBackend::Init(WindowSettings &windowSettings)
     {
         Logger::Message("WindowBackend: init");
-
-        if (!windowSettings)
-        {
-            Logger::Message("WindowBackend: window settings is null", Logger::Error);
-            return false;
-        }
 
         _windowHandle = std::unique_ptr<WindowHandle>(MakeWindow(windowSettings));
         if (!_windowHandle)
@@ -58,9 +52,9 @@ namespace TE
         ShowWindow(static_cast<HWND>(_windowHandle->GetRawHandle()), SW_SHOW);
     }
 
-    void Win32WindowBackend::OverrideWindowProc(LRESULT (*WndProc)(HWND hWnd, unsigned int msg, WPARAM wparam, LPARAM lparam))
+    void Win32WindowBackend::OverrideWindowProcedure(LRESULT (*WindowProcedurePointer)(HWND hWnd, unsigned int msg, WPARAM wparam, LPARAM lparam))
     {
-        WindowProcedureOverride = WndProc;
+        WindowProcedureOverride = WindowProcedurePointer;
     }
 
     LRESULT Win32WindowBackend::WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wparam, LPARAM lparam)
@@ -85,7 +79,7 @@ namespace TE
         return 0;
     }
 
-    Win32WindowHandle *Win32WindowBackend::MakeWindow(WindowSettings *windowSettings)
+    Win32WindowHandle * const Win32WindowBackend::MakeWindow(WindowSettings &windowSettings)
     {
         HMODULE hInstance = GetModuleHandle(nullptr);
         if (!hInstance)
@@ -122,14 +116,14 @@ namespace TE
             return nullptr;
         }
 
-        auto x = (desktopRect.right / 2) - (windowSettings->width / 2);
-        auto y = (desktopRect.bottom / 2) - (windowSettings->height / 2);
+        auto x = (desktopRect.right / 2) - (windowSettings.width / 2);
+        auto y = (desktopRect.bottom / 2) - (windowSettings.height / 2);
 
         HWND hWindow = CreateWindow(
                 WindowClassName.c_str(),
-                windowSettings->title.c_str(),
+                windowSettings.title.c_str(),
                 WS_OVERLAPPEDWINDOW,
-                x, y, windowSettings->width, windowSettings->height,
+                x, y, windowSettings.width, windowSettings.height,
                 nullptr, nullptr, hInstance, nullptr);
 
         if (!hWindow)

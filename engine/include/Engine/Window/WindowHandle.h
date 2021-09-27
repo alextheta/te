@@ -6,6 +6,6 @@ namespace TE
     {
     public:
         virtual ~WindowHandle() = default;
-        virtual void *GetRawHandle() = 0;
+        virtual void * const GetRawHandle() const = 0;
     };
 }

@@ -11,9 +11,9 @@ namespace TE
     class TE_EXPORT Render
     {
     public:
-        Render(RenderBackend *backend);
+        Render(RenderBackend * const backend);
         ~Render();
-        bool Init(Window *window);
+        bool Init(const Window * const window);
 
         void Clear();
         void ProcessSwapChain();

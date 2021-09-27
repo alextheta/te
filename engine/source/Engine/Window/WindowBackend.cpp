@@ -2,7 +2,7 @@
 
 namespace TE
 {
-    WindowHandle *WindowBackend::GetWindowHandle()
+    const WindowHandle * const WindowBackend::GetWindowHandle() const
     {
         return _windowHandle.get();
     }

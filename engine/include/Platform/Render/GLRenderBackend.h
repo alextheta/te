@@ -10,7 +10,7 @@ namespace TE
     public:
         GLRenderBackend(int openGLMajorVersion, int openGLMinorVersion);
         virtual ~GLRenderBackend() override;
-        virtual bool Init(WindowBackend *windowBackend) override;
+        virtual bool Init(const WindowBackend * const windowBackend) override;
 
         virtual void Clear() override;
         virtual void ProcessSwapChain() override;

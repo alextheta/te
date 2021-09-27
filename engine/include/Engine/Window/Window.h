@@ -10,11 +10,11 @@ namespace TE
     public:
         Window(WindowBackend *backend);
         ~Window();
-        bool Init(WindowSettings *settings);
+        bool Init(WindowSettings &settings);
         void PollEvents();
         void Show();
 
-        WindowBackend *GetBackend();
+        const WindowBackend * const GetBackend() const;
 
         Event<void()> WindowCloseEvent;
 

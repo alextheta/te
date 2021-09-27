@@ -23,15 +23,9 @@ namespace TE
         Logger::Message("Window: destroy");
     }
 
-    bool Window::Init(WindowSettings *settings)
+    bool Window::Init(WindowSettings &settings)
     {
         Logger::Message("Window: init");
-
-        if (!settings)
-        {
-            Logger::Message("Window: settings is null", Logger::Error);
-            return false;
-        }
 
         return _windowBackend->Init(settings);
     }
@@ -46,7 +40,7 @@ namespace TE
         return _windowBackend->Show();
     }
 
-    WindowBackend *Window::GetBackend()
+    const WindowBackend * const Window::GetBackend() const
     {
         return _windowBackend.get();
     }

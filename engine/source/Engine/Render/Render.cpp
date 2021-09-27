@@ -6,7 +6,7 @@
 
 namespace TE
 {
-    Render::Render(RenderBackend *backend)
+    Render::Render(RenderBackend * const backend)
     {
         Logger::Message("Render: instantiate");
 
@@ -17,7 +17,6 @@ namespace TE
         }
 
         _renderBackend = std::unique_ptr<RenderBackend>(backend);
-
         _renderApiType = _renderBackend->GetApiType();
     }
 
@@ -31,7 +30,7 @@ namespace TE
         Logger::Message("Render: destroy");
     }
 
-    bool Render::Init(Window *window)
+    bool Render::Init(const Window * const window)
     {
         Logger::Message("Render: init");
 

@@ -4,13 +4,13 @@
 
 namespace TE
 {
-    GLContext *GLContextSolver::GetGLContext(WindowBackend *windowBackend)
+    GLContext *GLContextSolver::GetGLContext(const WindowBackend * const windowBackend)
     {
-        auto backend = dynamic_cast<Win32WindowBackend*>(windowBackend);
+        auto platformWindowBackend = dynamic_cast<const Win32WindowBackend * const>(windowBackend);
 
-        if (backend)
+        if (platformWindowBackend)
         {
-            return new WGLContext(backend->GetWindowHandle());
+            return new WGLContext(platformWindowBackend->GetWindowHandle());
         }
 
         return nullptr;

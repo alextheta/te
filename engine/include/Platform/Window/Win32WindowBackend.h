@@ -12,15 +12,15 @@ namespace TE
     public:
         Win32WindowBackend();
         virtual ~Win32WindowBackend() override;
-        virtual bool Init(WindowSettings *windowSettings) override;
+        virtual bool Init(WindowSettings &windowSettings) override;
         virtual void PollEvents() override;
         virtual void Show() override;
 
-        static void OverrideWindowProc(LRESULT (*WndProc)(HWND hWnd, unsigned int msg, WPARAM wparam, LPARAM lparam));
+        static void OverrideWindowProcedure(LRESULT (*WindowProcedurePointer)(HWND hWnd, unsigned int msg, WPARAM wparam, LPARAM lparam));
 
     private:
         inline static LRESULT (*WindowProcedureOverride)(HWND hWnd, unsigned int msg, WPARAM wparam, LPARAM lparam);
         static LRESULT WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wparam, LPARAM lparam);
-        static Win32WindowHandle *MakeWindow(WindowSettings *windowSettings);
+        static Win32WindowHandle * const MakeWindow(WindowSettings &windowSettings);
     };
 }

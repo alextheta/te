@@ -20,7 +20,7 @@ namespace TE
         Logger::Message("RenderBackend: destroy");
     }
 
-    bool GLRenderBackend::Init(WindowBackend *windowBackend)
+    bool GLRenderBackend::Init(const WindowBackend * const windowBackend)
     {
         Logger::Message("RenderBackend: init");
 

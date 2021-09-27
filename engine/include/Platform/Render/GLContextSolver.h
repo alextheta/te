@@ -8,6 +8,6 @@ namespace TE
     class GLContextSolver
     {
     public:
-        static GLContext *GetGLContext(WindowBackend *windowBackend);
+        static GLContext *GetGLContext(const WindowBackend * const windowBackend);
     };
 }

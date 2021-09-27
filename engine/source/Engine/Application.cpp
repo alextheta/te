@@ -24,7 +24,7 @@ namespace TE
         windowSettings->width = 800;
         windowSettings->height = 600;
 
-        _engineCore->Init(windowSettings.get());
+        _engineCore->Init(*windowSettings);
 
         std::shared_ptr<Window> window = _engineCore->GetWindow();
         std::shared_ptr<Render> render = _engineCore->GetRender();
@@ -52,12 +52,12 @@ namespace TE
         _isRunning = false;
     }
 
-    std::shared_ptr<Window> Application::GetWindow()
+    const std::shared_ptr<Window> Application::GetWindow()
     {
         return _engineCore->GetWindow();
     }
 
-    std::shared_ptr<Render> Application::GetRender()
+    const std::shared_ptr<Render> Application::GetRender()
     {
         return _engineCore->GetRender();
     }

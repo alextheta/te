@@ -16,7 +16,7 @@ namespace TE
     {
     public:
         virtual ~RenderBackend() = default;
-        virtual bool Init(WindowBackend *windowBackend) = 0;
+        virtual bool Init(const WindowBackend * const windowBackend) = 0;
 
         virtual void Clear() = 0;
         virtual void ProcessSwapChain() = 0;

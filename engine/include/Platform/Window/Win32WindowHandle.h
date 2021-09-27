@@ -9,7 +9,7 @@ namespace TE
     {
     public:
         Win32WindowHandle(HWND hWnd);
-        virtual void *GetRawHandle() override;
+        virtual void * const GetRawHandle() const override;
 
     private:
         HWND _hWindow;

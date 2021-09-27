@@ -11,11 +11,11 @@ namespace TE
     PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = nullptr;
     PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = nullptr;
 
-    WGLContext::WGLContext(WindowHandle *windowHandle)
+    WGLContext::WGLContext(const WindowHandle * const windowHandle)
     {
         Logger::Message("GLContext: WGLContext");
 
-        _windowHandle = dynamic_cast<Win32WindowHandle *>(windowHandle);
+        _windowHandle = dynamic_cast<const Win32WindowHandle * const>(windowHandle);
     }
 
     WGLContext::~WGLContext()

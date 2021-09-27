@@ -10,7 +10,7 @@ namespace TE
     class WGLContext final : public GLContext
     {
     public:
-        WGLContext(WindowHandle *windowHandle);
+        WGLContext(const WindowHandle * const windowHandle);
         virtual ~WGLContext() override;
         virtual bool Init(int openGLMajorVersion, int openGLMinorVersion) override;
 
@@ -21,7 +21,7 @@ namespace TE
         bool InitExtensions();
         bool BindExtensions();
 
-        Win32WindowHandle *_windowHandle;
+        const Win32WindowHandle *_windowHandle;
         HDC _displayContext;
         HGLRC _renderContext;
     };

@@ -8,7 +8,7 @@
 
 namespace TE
 {
-    class TE_EXPORT Logger
+    class TE_API Logger
     {
     public:
         enum Severity

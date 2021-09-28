@@ -3,10 +3,11 @@
 #include <memory>
 
 #include <Engine/Render/Shader.h>
+#include <Engine/Common.h>
 
 namespace TE
 {
-    class ShaderProgram
+    class TE_API ShaderProgram
     {
     public:
         std::string name;

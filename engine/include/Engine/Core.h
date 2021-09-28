@@ -2,10 +2,11 @@
 
 #include <Engine/Render/Render.h>
 #include <Engine/Window/Window.h>
+#include <Engine/Common.h>
 
 namespace TE
 {
-    class Core
+    class TE_API Core
     {
     public:
         Core(WindowBackend *windowBackend, RenderBackend *renderBackend);

@@ -5,10 +5,11 @@
 #include <Engine/Window/WindowSettings.h>
 #include <Engine/Window/WindowHandle.h>
 #include <Engine/Event/Event.h>
+#include <Engine/Common.h>
 
 namespace TE
 {
-    class WindowBackend
+    class TE_API WindowBackend
     {
     public:
         virtual ~WindowBackend() = default;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Engine/Core.h>
+#include <Engine/Common.h>
 
 namespace TE
 {

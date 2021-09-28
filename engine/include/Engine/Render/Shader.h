@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include <Engine/Common.h>
+
 namespace TE
 {
     enum ShaderType
@@ -10,7 +12,7 @@ namespace TE
         Fragment
     };
 
-    class Shader
+    class TE_API Shader
     {
     public:
         std::string name;

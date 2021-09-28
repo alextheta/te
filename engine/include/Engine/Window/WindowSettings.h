@@ -2,9 +2,11 @@
 
 #include <string>
 
+#include <Engine/Common.h>
+
 namespace TE
 {
-    class WindowSettings
+    class TE_API WindowSettings
     {
     public:
         std::wstring title;

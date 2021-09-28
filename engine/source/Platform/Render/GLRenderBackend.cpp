@@ -3,6 +3,7 @@
 
 #include <Engine/Logger.h>
 #include <Platform/Render/GLRenderBackend.h>
+#include <Platform/Render/GLShaderDataTypeWrapper.h>
 #include <Platform/Render/GLContextSolver.h>
 
 namespace TE
@@ -10,6 +11,7 @@ namespace TE
     GLRenderBackend::GLRenderBackend(int openGLMajorVersion, int openGLMinorVersion)
     {
         _renderApiType = OpenGL;
+        _shaderDataTypeWrapper = std::make_shared<GLShaderDataTypeWrapper>();
         _majorVersion = openGLMajorVersion;
         _minorVersion = openGLMinorVersion;
         Logger::Message(std::format("RenderBackend: GLRenderBackend {}.{}", openGLMajorVersion, openGLMinorVersion));

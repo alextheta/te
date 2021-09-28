@@ -1,3 +1,7 @@
 #pragma once
 
-#define TE_EXPORT __declspec(dllexport)
+#ifdef TE_IMPORT
+#define TE_API __declspec(dllexport)
+#else
+#define TE_API __declspec(dllimport)
+#endif

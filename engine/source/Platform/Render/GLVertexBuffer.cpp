@@ -12,10 +12,20 @@ namespace TE
         glDeleteBuffers(1, &_id);
     }
 
-    void GLVertexBuffer::SetData(const void* data, uint32_t size)
+    void GLVertexBuffer::SetData(const void *data, uint32_t size)
     {
         Bind();
         glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+    }
+
+    const BufferLayout &GLVertexBuffer::GetLayout() const
+    {
+        return *_layout.get();
+    }
+
+    void GLVertexBuffer::SetLayout(const BufferLayout &layout)
+    {
+        _layout = std::make_unique<BufferLayout>(layout);
     }
 
     void GLVertexBuffer::Bind()

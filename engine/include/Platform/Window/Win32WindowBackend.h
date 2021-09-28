@@ -7,7 +7,7 @@
 
 namespace TE
 {
-    class TE_EXPORT Win32WindowBackend final: public WindowBackend
+    class TE_API Win32WindowBackend final: public WindowBackend
     {
     public:
         Win32WindowBackend();

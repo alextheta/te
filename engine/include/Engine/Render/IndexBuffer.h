@@ -2,9 +2,11 @@
 
 #include <memory>
 
+#include <Engine/Common.h>
+
 namespace TE
 {
-    class IndexBuffer
+    class TE_API IndexBuffer
     {
     public:
         virtual ~IndexBuffer() = default;

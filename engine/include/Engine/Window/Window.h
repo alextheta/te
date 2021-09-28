@@ -2,10 +2,11 @@
 
 #include <Engine/Window/WindowBackend.h>
 #include <Engine/Event/Event.h>
+#include <Engine/Common.h>
 
 namespace TE
 {
-    class Window
+    class TE_API Window
     {
     public:
         Window(WindowBackend *backend);

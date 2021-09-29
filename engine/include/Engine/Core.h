@@ -14,11 +14,11 @@ namespace TE
 
         bool Init(WindowSettings &windowSettings);
 
-        const std::shared_ptr<Window> GetWindow();
-        const std::shared_ptr<Render> GetRender();
+        Window *const GetWindow();
+        Render *const GetRender();
 
     private:
-        std::shared_ptr<Window> _window;
-        std::shared_ptr<Render> _render;
+        std::unique_ptr<Window> _window;
+        std::unique_ptr<Render> _render;
     };
 }

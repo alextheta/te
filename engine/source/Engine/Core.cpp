@@ -22,8 +22,8 @@ namespace TE
             return;
         }
 
-        _window = std::make_shared<Window>(windowBackend);
-        _render = std::make_shared<Render>(renderBackend);
+        _window = std::make_unique<Window>(windowBackend);
+        _render = std::make_unique<Render>(renderBackend);
     }
 
     Core::~Core()
@@ -53,13 +53,13 @@ namespace TE
         return true;
     }
 
-    const std::shared_ptr<Window> Core::GetWindow()
+    Window *const Core::GetWindow()
     {
-        return _window;
+        return _window.get();
     }
 
-    const std::shared_ptr<Render> Core::GetRender()
+    Render *const Core::GetRender()
     {
-        return _render;
+        return _render.get();
     }
 }

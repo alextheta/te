@@ -12,8 +12,8 @@ namespace TE
         Window(WindowBackend *backend);
         ~Window();
         bool Init(WindowSettings &settings);
-        void PollEvents();
-        void Show();
+        void PollEvents() const;
+        void Show() const;
 
         const WindowBackend * const GetBackend() const;
 

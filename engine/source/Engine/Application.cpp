@@ -26,8 +26,8 @@ namespace TE
 
         _engineCore->Init(*windowSettings);
 
-        std::shared_ptr<Window> window = _engineCore->GetWindow();
-        std::shared_ptr<Render> render = _engineCore->GetRender();
+        Window* window = _engineCore->GetWindow();
+        Render* render = _engineCore->GetRender();
 
         window->WindowCloseEvent.AddListener(&Application::OnWindowClose, this);
 
@@ -52,12 +52,12 @@ namespace TE
         _isRunning = false;
     }
 
-    const std::shared_ptr<Window> Application::GetWindow()
+    Window *const Application::GetWindow()
     {
         return _engineCore->GetWindow();
     }
 
-    const std::shared_ptr<Render> Application::GetRender()
+    Render *const Application::GetRender()
     {
         return _engineCore->GetRender();
     }

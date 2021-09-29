@@ -18,16 +18,6 @@ namespace TE
         glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
     }
 
-    const BufferLayout &GLVertexBuffer::GetLayout() const
-    {
-        return *_layout.get();
-    }
-
-    void GLVertexBuffer::SetLayout(const BufferLayout &layout)
-    {
-        _layout = std::make_unique<BufferLayout>(layout);
-    }
-
     void GLVertexBuffer::Bind()
     {
         glBindBuffer(GL_ARRAY_BUFFER, _id);

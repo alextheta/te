@@ -30,12 +30,12 @@ namespace TE
         return _windowBackend->Init(settings);
     }
 
-    void Window::PollEvents()
+    void Window::PollEvents() const
     {
         _windowBackend->PollEvents();
     }
 
-    void Window::Show()
+    void Window::Show() const
     {
         return _windowBackend->Show();
     }

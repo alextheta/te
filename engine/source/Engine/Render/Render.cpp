@@ -39,12 +39,12 @@ namespace TE
         return _renderBackend->Init(window->GetBackend());
     }
 
-    void Render::Clear()
+    void Render::Clear() const
     {
         _renderBackend->Clear();
     }
 
-    void Render::ProcessSwapChain()
+    void Render::ProcessSwapChain() const
     {
         _renderBackend->ProcessSwapChain();
     }

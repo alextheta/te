@@ -4,7 +4,7 @@
 
 namespace TE
 {
-    class GLBufferLayout : public BufferLayout
+    class GLBufferLayout final : public BufferLayout
     {
     public:
         GLBufferLayout();

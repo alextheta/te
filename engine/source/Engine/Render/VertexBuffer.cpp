@@ -29,4 +29,21 @@ namespace TE
 
         return vertexBuffer;
     }
+
+    std::shared_ptr<VertexBuffer> VertexBuffer::Create(const void *vertices, uint32_t size, BufferLayout layout)
+    {
+        auto result = Create(vertices, size);
+        result->SetLayout(layout);
+        return result;
+    }
+
+    const BufferLayout &VertexBuffer::GetLayout() const
+    {
+        return *_layout.get();
+    }
+
+    void VertexBuffer::SetLayout(const BufferLayout &bufferLayout)
+    {
+        _layout = std::make_unique<BufferLayout>(bufferLayout);
+    }
 }

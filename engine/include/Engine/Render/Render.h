@@ -16,8 +16,8 @@ namespace TE
         ~Render();
         bool Init(const Window *const window);
 
-        void Clear();
-        void ProcessSwapChain();
+        void Clear() const;
+        void ProcessSwapChain() const;
 
         static RenderApiType GetApiType();
         static uint32_t GetShaderDataTypeSize(ShaderDataType type);

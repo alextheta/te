@@ -1,7 +1,7 @@
 #include <format>
 #include <GL/gl3w.h>
 
-#include <Engine/Logger.h>
+#include <Core/Logger.h>
 #include <Platform/Render/GLRenderBackend.h>
 #include <Platform/Render/GLShaderDataTypeWrapper.h>
 #include <Platform/Render/GLContextSolver.h>

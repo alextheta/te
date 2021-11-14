@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include <Engine/Render/ShaderDataTypeWrapper.h>
+#include <Core/Render/ShaderDataTypeWrapper.h>
 
 namespace TE
 {

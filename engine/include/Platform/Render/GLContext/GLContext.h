@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Engine/Window/WindowHandle.h>
+#include <Core/Window/WindowHandle.h>
 
 namespace TE
 {

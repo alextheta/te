@@ -2,7 +2,7 @@
 
 #include <GL/gl3w.h>
 
-#include <Engine/Render/VertexBuffer.h>
+#include <Core/Render/VertexBuffer.h>
 
 namespace TE
 {

@@ -2,7 +2,7 @@
 #include <GL/gl3w.h>
 #include <GL/wglext.h>
 
-#include <Engine/Logger.h>
+#include <Core/Logger.h>
 #include <Platform/Render/GLContext/WGLContext.h>
 
 namespace TE

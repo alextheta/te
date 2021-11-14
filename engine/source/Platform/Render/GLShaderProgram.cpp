@@ -1,9 +1,9 @@
 #include <vector>
 #include <format>
 
+#include <Core/Logger.h>
 #include <Platform/Render/GLShaderProgram.h>
 #include <Platform/Render/GLShader.h>
-#include <Engine/Logger.h>
 
 namespace TE
 {

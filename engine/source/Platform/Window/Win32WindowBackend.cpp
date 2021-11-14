@@ -1,7 +1,7 @@
 #include <Windows.h>
 #include <format>
 
-#include <Engine/Logger.h>
+#include <Core/Logger.h>
 #include <Platform/Window/Win32WindowBackend.h>
 
 namespace TE

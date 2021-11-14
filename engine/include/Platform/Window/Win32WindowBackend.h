@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Engine/Window/WindowBackend.h>
-#include <Engine/Window/WindowSettings.h>
+#include <Core/Common.h>
+#include <Core/Window/WindowBackend.h>
+#include <Core/Window/WindowSettings.h>
 #include <Platform/Window/Win32WindowHandle.h>
-#include <Engine/Common.h>
 
 namespace TE
 {

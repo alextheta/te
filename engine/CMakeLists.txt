@@ -24,22 +24,22 @@ file(GLOB_RECURSE LIB_GL3W dependencies/GL3W/src/*.c)
 add_library(gl3w OBJECT ${LIB_GL3W})
 
 # TE render
-file(GLOB_RECURSE SRC_ENGINE_RENDER source/Engine/Render/*.cpp)
+file(GLOB_RECURSE SRC_CORE_RENDER source/Core/Render/*.cpp)
 file(GLOB_RECURSE SRC_PLATFORM_RENDER source/Platform/Render/*.cpp)
-add_library(render OBJECT ${SRC_ENGINE_RENDER} ${SRC_PLATFORM_RENDER})
+add_library(render OBJECT ${SRC_CORE_RENDER} ${SRC_PLATFORM_RENDER})
 
 # TE window
-file(GLOB_RECURSE SRC_ENGINE_WINDOW source/Engine/Window/*.cpp)
+file(GLOB_RECURSE SRC_CORE_WINDOW source/Core/Window/*.cpp)
 file(GLOB_RECURSE SRC_PLATFORM_WINDOW source/Platform/Window/*.cpp)
-add_library(window OBJECT ${SRC_ENGINE_WINDOW} ${SRC_PLATFORM_WINDOW})
+add_library(window OBJECT ${SRC_CORE_WINDOW} ${SRC_PLATFORM_WINDOW})
 
 # TE event
-file(GLOB_RECURSE SRC_ENGINE_EVENT source/Engine/Event/*.cpp)
-add_library(event OBJECT ${SRC_ENGINE_EVENT})
+file(GLOB_RECURSE SRC_CORE_EVENT source/Core/Event/*.cpp)
+add_library(event OBJECT ${SRC_CORE_EVENT})
 
-# TE engine
-file(GLOB SRC_ENGINE source/Engine/*.cpp)
-add_library(${PROJECT_NAME} SHARED ${SRC_ENGINE})
+# TE core
+file(GLOB SRC_CORE source/Core/*.cpp)
+add_library(${PROJECT_NAME} SHARED ${SRC_CORE})
 
 # static lib
 target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL gl3w imgui window render event)

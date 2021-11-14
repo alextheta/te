@@ -2,7 +2,7 @@
 
 #include <GL/gl3w.h>
 
-#include <Engine/Render/VertexArray.h>
+#include <Core/Render/VertexArray.h>
 
 namespace TE
 {

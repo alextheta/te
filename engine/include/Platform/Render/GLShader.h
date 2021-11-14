@@ -2,7 +2,7 @@
 
 #include <GL/gl3w.h>
 
-#include <Engine/Render/Shader.h>
+#include <Core/Render/Shader.h>
 
 namespace TE
 {

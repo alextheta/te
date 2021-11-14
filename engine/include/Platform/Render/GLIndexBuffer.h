@@ -1,9 +1,9 @@
 #pragma once
 
+#include <cstdint>
 #include <GL/gl3w.h>
 
-#include <Engine/Render/IndexBuffer.h>
-#include <cstdint>
+#include <Core/Render/IndexBuffer.h>
 
 namespace TE
 {

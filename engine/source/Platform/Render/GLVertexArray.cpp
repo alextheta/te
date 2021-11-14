@@ -1,5 +1,5 @@
+#include <Core/Render/Render.h>
 #include <Platform/Render/GLVertexArray.h>
-#include <Engine/Render/Render.h>
 
 namespace TE
 {

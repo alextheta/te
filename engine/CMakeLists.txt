@@ -9,8 +9,11 @@ add_definitions(-DUNICODE -D_UNICODE -DTE_IMPORT)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../../bin/${CMAKE_BUILD_TYPE})
 
-# Include
+# TE include
 include_directories(include)
+
+# UUID_v4
+include_directories(dependencies/uuid_v4)
 
 # OpenGL
 find_package(OpenGL REQUIRED)
@@ -37,10 +40,14 @@ add_library(window OBJECT ${SRC_CORE_WINDOW} ${SRC_PLATFORM_WINDOW})
 file(GLOB_RECURSE SRC_CORE_EVENT source/Core/Event/*.cpp)
 add_library(event OBJECT ${SRC_CORE_EVENT})
 
+# TE engine
+file(GLOB_RECURSE SRC_ENGINE source/Engine/*.cpp)
+add_library(engine OBJECT ${SRC_ENGINE})
+
 # TE core
 file(GLOB SRC_CORE source/Core/*.cpp)
 add_library(${PROJECT_NAME} SHARED ${SRC_CORE})
 
 # static lib
-target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL gl3w imgui window render event)
+target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL gl3w imgui window render event engine)
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)

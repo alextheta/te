@@ -15,13 +15,29 @@ namespace TE
     public:
         std::string name;
 
-        World(std::string name);
+        World(const std::string &name);
         ~World();
 
-        std::shared_ptr<Entity> AddEntity(std::string entityName);
+        std::shared_ptr<Entity> CreateEntity(const std::string &entityName);
+        std::shared_ptr<Entity> FindEntity(const std::string &entityName) const;
+        void DestroyEntity(std::shared_ptr<Entity> entity);
+        void DestroyEntity(Entity &entity);
+        bool EntityExists(std::shared_ptr<Entity> entity) const;
+        bool EntityExists(Entity &entity) const;
 
         template<typename T>
-        const std::shared_ptr<T> AddComponent(std::shared_ptr<Entity> entity)
+        std::shared_ptr<T> AddComponent(std::shared_ptr<Entity> entity)
+        {
+            if (entity == nullptr)
+            {
+                return nullptr;
+            }
+
+            return AddComponent<T>(*entity);
+        }
+
+        template<typename T>
+        std::shared_ptr<T> AddComponent(Entity &entity)
         {
             if (!EntityExists(entity) || ComponentExists<T>(entity))
             {
@@ -33,20 +49,60 @@ namespace TE
         }
 
         template<typename T>
-        void RemoveComponent(std::shared_ptr<Entity> entity)
+        void RemoveComponent(std::shared_ptr<Entity> &entity) const
         {
-            RemoveComponent(entity, typeid(T));
+            if (entity == nullptr)
+            {
+                return;
+            }
+
+            RemoveComponent(entity->GetId(), typeid(T));
         }
 
-        bool EntityExists(std::shared_ptr<Entity> entity) const;
+        template<typename T>
+        void RemoveComponent(Entity &entity)
+        {
+            RemoveComponent(entity.GetId(), typeid(T));
+        }
+
+        template<typename T>
+        std::shared_ptr<T> GetComponent(std::shared_ptr<Entity> entity) const
+        {
+            if (entity == nullptr)
+            {
+                return nullptr;
+            }
+
+            auto entityId = entity->GetId();
+            return std::dynamic_pointer_cast<T>(GetComponent(entityId, typeid(T)));
+        }
+
+        template<typename T>
+        std::shared_ptr<T> GetComponent(Entity &entity)
+        {
+            return GetComponent(entity.GetId(), typeid(T));
+        }
 
         template<typename T>
         bool ComponentExists(std::shared_ptr<Entity> entity) const
         {
-            return ComponentExists(entity, typeid(T));
+            if (entity == nullptr)
+            {
+                return;
+            }
+
+            return ComponentExists(entity->GetId(), typeid(T));
+        }
+
+        template<typename T>
+        bool ComponentExists(Entity &entity) const
+        {
+            return ComponentExists(entity.GetId(), typeid(T));
         }
 
     private:
+        friend class Entity;
+
         struct EntityHash
         {
             std::size_t operator()(const Entity::EntityId &entityId) const;
@@ -56,8 +112,13 @@ namespace TE
         std::unique_ptr<std::unordered_map<std::type_index, std::shared_ptr<EntityComponents>>> _components;
         std::unique_ptr<std::unordered_map<Entity::EntityId, std::shared_ptr<Entity>, EntityHash>> _entities;
 
-        const std::shared_ptr<Component> AddComponent(std::shared_ptr<Entity> entity, std::shared_ptr<Component> component);
-        void RemoveComponent(std::shared_ptr<Entity> entity, std::type_index componentType);
-        bool ComponentExists(std::shared_ptr<Entity> entity, std::type_index componentType) const;
+        void DestroyEntity(Entity::EntityId &entityId);
+        bool EntityExists(Entity::EntityId &entityId) const;
+
+        std::shared_ptr<Component> AddComponent(Entity::EntityId &entityId, std::shared_ptr<Component> component);
+        std::shared_ptr<Component> GetComponent(Entity::EntityId &entityId, std::type_index componentType) const;
+        void RemoveComponent(Entity::EntityId &entityId, std::type_index componentType);
+        void RemoveAllComponents(Entity::EntityId &entity);
+        bool ComponentExists(Entity::EntityId &entityId, std::type_index componentType) const;
     };
 }

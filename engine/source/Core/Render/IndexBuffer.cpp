@@ -7,7 +7,7 @@ namespace TE
 {
     std::shared_ptr<IndexBuffer> IndexBuffer::Create(int32_t *indices, uint32_t count)
     {
-        auto renderApiType = Render::GetApiType();
+        auto renderApiType = RenderApi::GetApiType();
 
         switch (renderApiType)
         {

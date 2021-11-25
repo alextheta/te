@@ -35,12 +35,12 @@ namespace TE
         _isRunning = true;
         while (_isRunning)
         {
-            render->Clear();
+            RenderApi::Clear();
 
             Update();
 
             window->PollEvents();
-            render->ProcessSwapChain();
+            RenderApi::ProcessSwapChain();
         }
 
         Dispose();

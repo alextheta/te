@@ -1,13 +1,12 @@
 #include <Core/Logger.h>
 #include <Core/Render/Render.h>
-#include <Core/Render/VertexBuffer.h>
 #include <Platform/Render/GLVertexBuffer.h>
 
 namespace TE
 {
     std::shared_ptr<VertexBuffer> VertexBuffer::Create(const void *vertices, uint32_t size)
     {
-        auto renderApiType = Render::GetApiType();
+        auto renderApiType = RenderApi::GetApiType();
         std::shared_ptr<VertexBuffer> vertexBuffer = nullptr;
 
         switch (renderApiType)

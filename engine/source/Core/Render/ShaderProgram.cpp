@@ -14,7 +14,7 @@ namespace TE
 
     std::shared_ptr<ShaderProgram> ShaderProgram::Create(const std::string &name, const std::initializer_list<std::shared_ptr<Shader>> &shaders)
     {
-        auto renderApiType = Render::GetApiType();
+        auto renderApiType = RenderApi::GetApiType();
 
         switch (renderApiType)
         {

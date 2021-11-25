@@ -6,7 +6,7 @@ namespace TE
 {
     std::shared_ptr<VertexArray> VertexArray::Create()
     {
-        auto renderApiType = Render::GetApiType();
+        auto renderApiType = RenderApi::GetApiType();
 
         switch (renderApiType)
         {

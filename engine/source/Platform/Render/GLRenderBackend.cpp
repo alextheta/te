@@ -60,4 +60,9 @@ namespace TE
     {
         _context->ProcessSwapChain();
     }
+
+    void GLRenderBackend::DrawIndexed(VertexArray &vertexArray)
+    {
+        glDrawElements(GL_TRIANGLES, vertexArray.GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+    }
 }

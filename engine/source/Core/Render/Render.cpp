@@ -13,9 +13,10 @@ namespace TE
             return;
         }
 
-        _renderBackend = std::unique_ptr<RenderBackend>(backend);
-        _renderApiType = _renderBackend->GetApiType();
+        _renderBackend = std::shared_ptr<RenderBackend>(backend);
         _shaderDataTypeWrapper = _renderBackend->GetShaderDataTypeWrapper();
+
+        RenderApi::_backend = _renderBackend;
     }
 
     Render::~Render()
@@ -34,21 +35,6 @@ namespace TE
         }
 
         return _renderBackend->Init(window->GetBackend());
-    }
-
-    void Render::Clear() const
-    {
-        _renderBackend->Clear();
-    }
-
-    void Render::ProcessSwapChain() const
-    {
-        _renderBackend->ProcessSwapChain();
-    }
-
-    RenderApiType Render::GetApiType()
-    {
-        return _renderApiType;
     }
 
     uint32_t Render::GetShaderDataTypeSize(ShaderDataType type)

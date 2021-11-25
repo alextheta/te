@@ -15,6 +15,8 @@ namespace TE
         virtual void Clear() override;
         virtual void ProcessSwapChain() override;
 
+        virtual void DrawIndexed(VertexArray &vertexArray) override;
+
     private:
         std::unique_ptr<GLContext> _context;
         int _majorVersion;

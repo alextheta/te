@@ -5,6 +5,7 @@
 #include <Core/Common.h>
 #include <Core/Window/WindowBackend.h>
 #include <Core/Render/ShaderDataTypeWrapper.h>
+#include <Core/Render/VertexArray.h>
 
 namespace TE
 {
@@ -22,6 +23,8 @@ namespace TE
 
         virtual void Clear() = 0;
         virtual void ProcessSwapChain() = 0;
+
+        virtual void DrawIndexed(VertexArray &vertexArray) = 0;
 
         RenderApiType GetApiType();
         ShaderDataTypeWrapper *const GetShaderDataTypeWrapper();

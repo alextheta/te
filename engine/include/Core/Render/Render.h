@@ -3,6 +3,7 @@
 #include <memory>
 
 #include <Core/Common.h>
+#include <Core/Render/RenderApi.h>
 #include <Core/Render/RenderBackend.h>
 #include <Core/Window/Window.h>
 #include <Core/Render/ShaderDataTypeWrapper.h>
@@ -16,17 +17,12 @@ namespace TE
         ~Render();
         bool Init(const Window *const window);
 
-        void Clear() const;
-        void ProcessSwapChain() const;
-
-        static RenderApiType GetApiType();
         static uint32_t GetShaderDataTypeSize(ShaderDataType type);
         static uint32_t GetVendorShaderDataType(ShaderDataType type);
 
     private:
-        std::unique_ptr<RenderBackend> _renderBackend;
+        std::shared_ptr<RenderBackend> _renderBackend;
 
-        inline static RenderApiType _renderApiType = Unknown;
         inline static ShaderDataTypeWrapper *_shaderDataTypeWrapper = nullptr;
     };
 }

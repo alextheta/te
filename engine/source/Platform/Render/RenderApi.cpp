@@ -22,16 +22,16 @@ namespace TE
 
     }
 
-    void RenderApi::Render(ShaderProgram &shaderProgram, VertexArray &vertexArray)
+    void RenderApi::Render(Material &material, VertexArray &vertexArray)
     {
-        shaderProgram.Bind();
+        material.Bind();
         vertexArray.Bind();
         DrawIndexed(vertexArray);
     }
 
-    void RenderApi::Render(std::shared_ptr<ShaderProgram> &shaderProgram, std::shared_ptr<VertexArray> &vertexArray)
+    void RenderApi::Render(std::shared_ptr<Material> &material, std::shared_ptr<VertexArray> &vertexArray)
     {
-        Render(*shaderProgram, *vertexArray);
+        Render(*material, *vertexArray);
     }
 
     void RenderApi::EndFrame()

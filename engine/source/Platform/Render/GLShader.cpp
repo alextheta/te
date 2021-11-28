@@ -46,12 +46,12 @@ namespace TE
         _id = NULL;
     }
 
-    GLuint GLShader::GetId()
+    GLuint GLShader::GetId() const
     {
         return _id;
     }
 
-    bool GLShader::IsValid()
+    bool GLShader::IsValid() const
     {
         return _id != NULL;
     }

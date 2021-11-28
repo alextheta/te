@@ -20,7 +20,7 @@ namespace TE
         Shader(const std::string &name, const std::string &source, ShaderType type);
         virtual ~Shader() = default;
 
-        virtual bool IsValid() = 0;
+        virtual bool IsValid() const = 0;
 
         static std::shared_ptr<Shader> Create(const std::string &name, const std::string &source, ShaderType type);
 

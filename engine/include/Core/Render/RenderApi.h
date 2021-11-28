@@ -2,7 +2,7 @@
 
 #include <Core/Render/RenderBackend.h>
 #include <Core/Render/VertexArray.h>
-#include <Core/Render/ShaderProgram.h>
+#include <Core/Render/Material.h>
 
 namespace TE
 {
@@ -15,8 +15,8 @@ namespace TE
         static void ProcessSwapChain();
 
         static void StartFrame();
-        static void Render(ShaderProgram &shaderProgram, VertexArray &vertexArray);
-        static void Render(std::shared_ptr<ShaderProgram> &shaderProgram, std::shared_ptr<VertexArray> &vertexArray);
+        static void Render(Material &material, VertexArray &vertexArray);
+        static void Render(std::shared_ptr<Material> &material, std::shared_ptr<VertexArray> &vertexArray);
         static void EndFrame();
 
         static void DrawIndexed(VertexArray &vertexArray);

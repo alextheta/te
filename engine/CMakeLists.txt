@@ -9,8 +9,12 @@ add_definitions(-DUNICODE -D_UNICODE -DTE_IMPORT)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../../bin/${CMAKE_BUILD_TYPE})
 
-# TE include
-include_directories(include)
+# Boost
+set(BOOST_ROOT C:/boost/boost_1_78_0)
+find_package(Boost 1.78.0 REQUIRED)
+if (Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS})
+endif()
 
 # UUID_v4
 include_directories(dependencies/uuid_v4)
@@ -25,6 +29,9 @@ include_directories(dependencies/glm)
 include_directories(dependencies/GL3W/include)
 file(GLOB_RECURSE LIB_GL3W dependencies/GL3W/src/*.c)
 add_library(gl3w OBJECT ${LIB_GL3W})
+
+# TE include
+include_directories(include)
 
 # TE render
 file(GLOB_RECURSE SRC_CORE_RENDER source/Core/Render/*.cpp)

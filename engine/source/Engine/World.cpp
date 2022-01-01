@@ -1,203 +1,145 @@
-#include <uuid_v4.h>
 #include <format>
-#include <vector>
 
+#include <Engine/Entity.h>
 #include <Core/Logger.h>
-#include <Engine/World.h>
 
 namespace TE
 {
-    static UUID::UUIDGenerator<std::mt19937_64> uuidGenerator;
-
-    World::World(const std::string &name) : name(name)
+    World::World(const std::string &name) : _name(name)
     {
-        _components = std::make_unique<std::unordered_map<std::type_index, std::shared_ptr<EntityComponents>>>();
-        _entities = std::make_unique<std::unordered_map<Entity::EntityId, std::shared_ptr<Entity>, EntityHash>>();
+        _initialEntityPoolCapacity = 512;
+        _initialComponentPoolCapacity = 128;
 
-        Logger::Message(std::format("world \"{}\": instantiate", name));
+        Logger::Message(std::format("World \"{}\": instantiate", _name));
+        _entitySparseIndices.reserve(_initialEntityPoolCapacity);
+        _entities.reserve(_initialEntityPoolCapacity);
     }
 
     World::~World()
     {
-        Logger::Message(std::format("world \"{}\": destroy", name));
+        Logger::Message(std::format("World \"{}\": destroy", _name));
     }
 
-    std::shared_ptr<Entity> World::CreateEntity(const std::string &entityName)
+    bool World::EntityExists(int index) const
     {
-        Entity::EntityId entityId;
-        UUID::UUID uuid = uuidGenerator.getUUID();
-        std::memcpy(entityId.data, uuid.bytes().c_str(), sizeof(entityId.data));
-
-        auto entity = std::make_shared<Entity>(entityName, entityId, this);
-
-        _entities->insert({entityId, entity});
-
-        return entity;
-    }
-
-    std::shared_ptr<Entity> World::FindEntity(const std::string &entityName) const
-    {
-        for (auto entityIdPair : *_entities)
+        if (index < _activeEntityCount && _entities[index]._id != Entity::InvalidIndex)
         {
-            auto entity = entityIdPair.second;
-            if (entityName.compare(entity->name) == 0)
-            {
-                return entity;
-            }
+            return true;
         }
 
-        return nullptr;
+        return false;
     }
 
-    void World::DestroyEntity(std::shared_ptr<Entity> entity)
+    Entity World::CreateEntity(const std::string &name)
     {
-        if (entity == nullptr)
+        int entityId;
+
+        if (!_unusedEntityIndexPool.empty())
         {
-            return;
+            entityId = _unusedEntityIndexPool.top();
+            _unusedEntityIndexPool.pop();
+        }
+        else
+        {
+            entityId = _entities.size();
         }
 
-        auto entityId = entity->GetId();
-        DestroyEntity(entityId);
+        if (_entitySparseIndices.size() < entityId + 1)
+        {
+            _entitySparseIndices.resize(entityId + 1);
+        }
+
+        if (EntityExists(entityId))
+        {
+            return Entity(Entity::InvalidIndex, 0, "");
+        }
+
+        if (entityId < _entities.size())
+        {
+            int denseIndex = _entitySparseIndices[entityId];
+            _entities[entityId]._id = denseIndex;
+            _entities[entityId]._version++;
+            _entities[entityId].name = name;
+            _entities[entityId]._components.reset();
+            _entitySparseIndices[denseIndex] = entityId;
+        }
+        else
+        {
+            _entities.push_back(Entity({entityId, 0, name}));
+            _entitySparseIndices[entityId] = _entities.size() - 1;
+        }
+
+        //_entities[entityId]._components.clear();
+        _entities[entityId]._world = this;
+        _activeEntityCount++;
+
+        return _entities[entityId];
     }
 
     void World::DestroyEntity(Entity &entity)
     {
-        auto entityId = entity.GetId();
-        DestroyEntity(entityId);
-    }
-
-    void World::DestroyEntity(Entity::EntityId &entityId)
-    {
+        int entityId = entity._id;
         if (!EntityExists(entityId))
         {
             return;
         }
 
-        RemoveAllComponents(entityId);
-        _entities->erase(entityId);
+        int denseIndex = _entitySparseIndices[entityId];
+        auto &temp = _entities[_activeEntityCount - 1];
+        _entities[denseIndex] = temp;
+        _entitySparseIndices[temp._id] = _entitySparseIndices[entityId];
+
+        _activeEntityCount--;
+        _unusedEntityIndexPool.push(temp._id);
+        _entitySparseIndices[entityId] = -1;
+        temp._id = Entity::InvalidIndex;
+        temp._version++;
     }
 
-    bool World::EntityExists(std::shared_ptr<Entity> entity) const
+    bool World::IsEntityValid(Entity &entity)
     {
-        if (entity == nullptr)
+        return entity._id != -1;
+    }
+
+    Component *World::AddComponent(Entity &entity, int32_t componentId, Component *component)
+    {
+        auto entityId = entity._id;
+        auto &componentContainer = _components[componentId];
+        componentContainer->Set(entityId, component);
+        auto &entityComponents = _entities[entityId]._components;
+        if (entityComponents.size() <= componentId)
         {
-            return false;
+            entityComponents.resize(componentId + 1);
         }
-
-        auto entityId = entity->GetId();
-        return EntityExists(entityId);
+        entityComponents.set(componentId);
+        return componentContainer->Get(entityId);
     }
 
-    bool World::EntityExists(Entity &entity) const
+    Component *World::GetComponent(Entity &entity, int32_t componentId)
     {
-        auto entityId = entity.GetId();
-        return EntityExists(entityId);
-    }
-
-    bool World::EntityExists(Entity::EntityId &entityId) const
-    {
-        return _entities->contains(entityId);
-    }
-
-    std::shared_ptr<Component> World::AddComponent(Entity::EntityId &entityId, std::shared_ptr<Component> component)
-    {
-        if (!EntityExists(entityId))
+        auto entityId = entity._id;
+        auto &entityComponents = _entities[entityId]._components;
+        if (entityComponents.size() <= componentId || !entityComponents.test(componentId))
         {
             return nullptr;
         }
 
-        std::type_index componentType = typeid(*component);
-
-        if (!_components->contains(componentType))
-        {
-            (*_components)[componentType] = std::make_shared<EntityComponents>();
-        }
-
-        auto entityComponents = (*_components)[componentType];
-
-        if (ComponentExists(entityId, componentType))
-        {
-            return (*entityComponents)[entityId];
-        }
-
-        (*entityComponents)[entityId] = std::shared_ptr<Component>(component);
-        return (*entityComponents)[entityId];
+        return _components[componentId]->Get(entityId);
     }
 
-    std::shared_ptr<Component> World::GetComponent(Entity::EntityId &entityId, std::type_index componentType) const
+    void World::RemoveComponent(Entity &entity, int32_t componentId)
     {
-        if (!ComponentExists(entityId, componentType))
-        {
-            return nullptr;
-        }
-
-        auto entityComponents = (*_components)[componentType];
-
-        return (*entityComponents)[entityId];
-    }
-
-    void World::RemoveComponent(Entity::EntityId &entityId, std::type_index componentType)
-    {
-        if (!ComponentExists(entityId, componentType))
+        auto entityId = entity._id;
+        if (_entities[entityId]._id != entityId)
         {
             return;
         }
 
-        auto entityComponents = (*_components)[componentType];
-
-        if (!entityComponents->contains(entityId))
-        {
-            return;
-        }
-
-        entityComponents->erase(entityId);
+        _entities[entityId]._components.reset(componentId);
     }
 
-    void World::RemoveAllComponents(Entity::EntityId &entityId) // TODO: optimize & rework entity-component database
+    const std::vector<Entity> *World::GetEntityPool() const
     {
-        if (!EntityExists(entityId))
-        {
-            return;
-        }
-
-        std::vector<std::shared_ptr<Component>> componentsToRemove;
-
-        for (auto componentEntityPair : *_components)
-        {
-            auto entityComponents = componentEntityPair.second;
-            for (auto entityComponent : *entityComponents)
-            {
-                auto foundEntityId = entityComponent.first;
-                if (foundEntityId != entityId)
-                {
-                    continue;
-                }
-
-                componentsToRemove.push_back(entityComponent.second);
-            }
-        }
-
-        for (auto component : componentsToRemove)
-        {
-            RemoveComponent(entityId, typeid(*component));
-        }
-    }
-
-    bool World::ComponentExists(Entity::EntityId &entityId, std::type_index componentType) const
-    {
-        if (!_entities->contains(entityId) || !_components->contains(componentType))
-        {
-            return false;
-        }
-
-        return (*_components)[componentType]->contains(entityId);
-    }
-
-    std::size_t World::EntityHash::operator()(const Entity::EntityId &entityId) const
-    {
-        return std::hash<int>()(entityId.data[0]) ^
-               std::hash<int>()(entityId.data[1]) ^
-               std::hash<int>()(entityId.data[2]) ^
-               std::hash<int>()(entityId.data[3]);
+        return &_entities;
     }
 }

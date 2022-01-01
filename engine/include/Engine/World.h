@@ -1,124 +1,72 @@
 #pragma once
 
-#include <unordered_map>
-#include <unordered_set>
-#include <typeindex>
+#include <vector>
+#include <bitset>
+#include <memory>
+#include <stack>
 
-#include <Core/Common.h>
-#include <Engine/Entity.h>
-#include <Engine/Components/Component.h>
+#include <Engine/ComponentContainer.h>
 
 namespace TE
 {
-    class TE_API World final
+    class Entity;
+
+    class World final
     {
     public:
-        std::string name;
-
         World(const std::string &name);
         ~World();
 
-        std::shared_ptr<Entity> CreateEntity(const std::string &entityName);
-        std::shared_ptr<Entity> FindEntity(const std::string &entityName) const;
-        void DestroyEntity(std::shared_ptr<Entity> entity);
+        Entity CreateEntity(const std::string &name);
         void DestroyEntity(Entity &entity);
-        bool EntityExists(std::shared_ptr<Entity> entity) const;
-        bool EntityExists(Entity &entity) const;
+        bool IsEntityValid(Entity &entity);
 
         template<typename T>
-        std::shared_ptr<T> AddComponent(std::shared_ptr<Entity> entity)
+        T *AddComponent(Entity &entity)
         {
-            if (entity == nullptr)
+            int32_t componentId = GetComponentTypeId<T>();
+            if (_components.size() <= componentId)
             {
-                return nullptr;
+                CreateComponentContainer<T>(componentId);
             }
 
-            return AddComponent<T>(*entity);
+            return static_cast<T *>(AddComponent(entity, componentId, new T()));
         }
 
         template<typename T>
-        std::shared_ptr<T> AddComponent(Entity &entity)
+        T *GetComponent(Entity &entity)
         {
-            if (!EntityExists(entity) || ComponentExists<T>(entity))
-            {
-                return nullptr;
-            }
-
-            auto component = std::make_shared<T>();
-            return std::dynamic_pointer_cast<T>(AddComponent(entity, component));
-        }
-
-        template<typename T>
-        void RemoveComponent(std::shared_ptr<Entity> &entity) const
-        {
-            if (entity == nullptr)
-            {
-                return;
-            }
-
-            RemoveComponent(entity->GetId(), typeid(T));
+            return static_cast<T *>(GetComponent(entity, GetComponentTypeId<T>()));
         }
 
         template<typename T>
         void RemoveComponent(Entity &entity)
         {
-            RemoveComponent(entity.GetId(), typeid(T));
+            RemoveComponent(entity, GetComponentTypeId<T>());
         }
 
-        template<typename T>
-        std::shared_ptr<T> GetComponent(std::shared_ptr<Entity> entity) const
-        {
-            if (entity == nullptr)
-            {
-                return nullptr;
-            }
-
-            auto entityId = entity->GetId();
-            return std::dynamic_pointer_cast<T>(GetComponent(entityId, typeid(T)));
-        }
-
-        template<typename T>
-        std::shared_ptr<T> GetComponent(Entity &entity)
-        {
-            return GetComponent(entity.GetId(), typeid(T));
-        }
-
-        template<typename T>
-        bool ComponentExists(std::shared_ptr<Entity> entity) const
-        {
-            if (entity == nullptr)
-            {
-                return;
-            }
-
-            return ComponentExists(entity->GetId(), typeid(T));
-        }
-
-        template<typename T>
-        bool ComponentExists(Entity &entity) const
-        {
-            return ComponentExists(entity.GetId(), typeid(T));
-        }
+        const std::vector<Entity> *GetEntityPool() const;
+        bool EntityExists(int index) const;
 
     private:
-        friend class Entity;
+        std::string _name;
+        int32_t _initialEntityPoolCapacity;
+        int32_t _initialComponentPoolCapacity;
+        int32_t _activeEntityCount = 0;
+        std::vector<Entity> _entities;
+        std::vector<int32_t> _entitySparseIndices;
+        std::stack<int32_t> _unusedEntityIndexPool;
+        std::vector<std::shared_ptr<BaseContainer>> _components;
 
-        struct EntityHash
+        Component *AddComponent(Entity &entity, int32_t componentId, Component *component);
+        Component *GetComponent(Entity &entity, int32_t componentId);
+        void RemoveComponent(Entity &entity, int32_t componentId);
+
+        template<typename T>
+        void CreateComponentContainer(int32_t componentId)
         {
-            std::size_t operator()(const Entity::EntityId &entityId) const;
-        };
-
-        typedef std::unordered_map<Entity::EntityId, std::shared_ptr<Component>, EntityHash> EntityComponents;
-        std::unique_ptr<std::unordered_map<std::type_index, std::shared_ptr<EntityComponents>>> _components;
-        std::unique_ptr<std::unordered_map<Entity::EntityId, std::shared_ptr<Entity>, EntityHash>> _entities;
-
-        void DestroyEntity(Entity::EntityId &entityId);
-        bool EntityExists(Entity::EntityId &entityId) const;
-
-        std::shared_ptr<Component> AddComponent(Entity::EntityId &entityId, std::shared_ptr<Component> component);
-        std::shared_ptr<Component> GetComponent(Entity::EntityId &entityId, std::type_index componentType) const;
-        void RemoveComponent(Entity::EntityId &entityId, std::type_index componentType);
-        void RemoveAllComponents(Entity::EntityId &entity);
-        bool ComponentExists(Entity::EntityId &entityId, std::type_index componentType) const;
+            auto componentContainer = std::make_shared<ComponentContainer<T>>(_initialComponentPoolCapacity);
+            _components.push_back(componentContainer);
+        }
     };
 }

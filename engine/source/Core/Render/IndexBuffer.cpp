@@ -1,6 +1,5 @@
 #include <Core/Logger.h>
 #include <Core/Render/Render.h>
-#include <Core/Render/IndexBuffer.h>
 #include <Platform/Render/GLIndexBuffer.h>
 
 namespace TE

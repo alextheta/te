@@ -58,6 +58,11 @@ namespace TE
         }
     }
 
+    bool Material::IsValid()
+    {
+        return _shader->IsValid();
+    }
+
     void Material::SetProperty(const std::string &propertyName, bool data)
     {
         if (_shader->ContainsProperty(propertyName))

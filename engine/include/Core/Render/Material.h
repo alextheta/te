@@ -13,6 +13,7 @@ namespace TE
         Material(std::shared_ptr<ShaderProgram> &shader);
 
         void Bind();
+        bool IsValid();
 
         void SetProperty(const std::string &propertyName, bool data);
         void SetProperty(const std::string &propertyName, int32_t data);

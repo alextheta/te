@@ -14,9 +14,7 @@ namespace TE
     {
         for (auto &entity : *_world->GetEntityPool())
         {
-            auto entityComponents = entity._components;
-            entityComponents.resize(_components.size());
-            if ((_components & entityComponents) == _components)
+            if (ComponentsMatch(entity._components, _components))
             {
                 return Iterator(_world, entity._id, _components);
             }
@@ -59,14 +57,16 @@ namespace TE
         return *this;
     }
 
-    bool BaseFilter::Iterator::ComponentsMatch(const boost::dynamic_bitset<> &components) const
-    {
-        return _components.any() && components.any() && components == (_components & components);
-    }
-
     bool BaseFilter::Iterator::IsValid()
     {
         auto entity = (*_world->GetEntityPool())[_entityIndex];
-        return _world->IsEntityValid(entity) && ComponentsMatch(entity._components);
+        return _world->IsEntityValid(entity) && ComponentsMatch(entity._components, _components);
+    }
+
+    bool BaseFilter::ComponentsMatch(const boost::dynamic_bitset<> &leftComponents, const boost::dynamic_bitset<> &rightComponents)
+    {
+        auto left = leftComponents.to_ulong();
+        auto right = rightComponents.to_ulong();
+        return left == (left & right);
     }
 }

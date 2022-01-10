@@ -13,7 +13,6 @@ namespace TE
             Iterator(World *world, int32_t entityIndex, boost::dynamic_bitset<> components);
             Iterator();
 
-            bool ComponentsMatch(const boost::dynamic_bitset<> &components) const;
             bool IsValid();
             bool operator==(const Iterator &other) const;
             bool operator!=(const Iterator &other) const;
@@ -25,6 +24,8 @@ namespace TE
             boost::dynamic_bitset<> _components;
             World *_world;
         };
+
+        static bool ComponentsMatch(const boost::dynamic_bitset<> &leftComponents, const boost::dynamic_bitset<> &rightComponents);
 
         const Iterator begin() const;
         const Iterator end() const;

@@ -11,11 +11,11 @@ namespace TE
     PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = nullptr;
     PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = nullptr;
 
-    WGLContext::WGLContext(const WindowHandle * const windowHandle)
+    WGLContext::WGLContext(const WindowHandle *const windowHandle)
     {
         Logger::Message("GLContext: WGLContext");
 
-        _windowHandle = dynamic_cast<const Win32WindowHandle * const>(windowHandle);
+        _windowHandle = dynamic_cast<const Win32WindowHandle *const>(windowHandle);
     }
 
     WGLContext::~WGLContext()
@@ -114,7 +114,10 @@ namespace TE
             return false;
         }
 
-        Logger::Message(std::format("GLContext: {} {}", (const char *)glGetString(GL_VENDOR), (const char *)glGetString(GL_VERSION)), Logger::Info);
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
+
+        Logger::Message(std::format("GLContext: {} {}", (const char *) glGetString(GL_VENDOR), (const char *) glGetString(GL_VERSION)), Logger::Info);
 
         return true;
     }
@@ -231,21 +234,21 @@ namespace TE
     {
         gl3wInit();
 
-        wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)(gl3wGetProcAddress("wglChoosePixelFormatARB"));
+        wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC) (gl3wGetProcAddress("wglChoosePixelFormatARB"));
         if (!wglChoosePixelFormatARB)
         {
             Logger::Message("GLContext: [ext bind] wglChoosePixelFormatARB fail", Logger::Error);
             return false;
         }
 
-        wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)(gl3wGetProcAddress("wglCreateContextAttribsARB"));
+        wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC) (gl3wGetProcAddress("wglCreateContextAttribsARB"));
         if (!wglCreateContextAttribsARB)
         {
             Logger::Message("GLContext: [ext bind] wglCreateContextAttribsARB fail", Logger::Error);
             return false;
         }
 
-        wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)(gl3wGetProcAddress("wglSwapIntervalEXT"));
+        wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC) (gl3wGetProcAddress("wglSwapIntervalEXT"));
         if (!wglSwapIntervalEXT)
         {
             Logger::Message("GLContext: [ext bind] wglSwapIntervalEXT fail", Logger::Error);

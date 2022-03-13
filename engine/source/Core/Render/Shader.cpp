@@ -1,7 +1,6 @@
 #include <format>
 
 #include <Core/Logger.h>
-#include <Core/Core.h>
 #include <Core/Render/Render.h>
 #include <Core/Render/Shader.h>
 

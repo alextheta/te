@@ -92,7 +92,7 @@ namespace TE
         memset(&windowClass, 0, sizeof(WNDCLASSEX));
         windowClass.cbSize = sizeof(WNDCLASSEX);
         windowClass.style = CS_DBLCLKS;
-        windowClass.lpfnWndProc = WindowProcedure;
+        windowClass.lpfnWndProc = (WNDPROC) WindowProcedure;
         windowClass.cbClsExtra = 0;
         windowClass.cbWndExtra = 0;
         windowClass.hInstance = hInstance;

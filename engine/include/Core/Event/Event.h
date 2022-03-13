@@ -70,12 +70,12 @@ namespace TE
             }
         }
 
-        template<typename ReturnType, typename ...CallbackArgs>
-        ReturnType operator()(CallbackArgs... args)
+        template<typename FirstArgs, typename ...OtherArgs>
+        void operator()(FirstArgs firstArg, OtherArgs... otherArgs)
         {
             for (auto const&[id, event] : _events)
             {
-                event(args...);
+                event(firstArg, otherArgs...);
             }
         }
     };

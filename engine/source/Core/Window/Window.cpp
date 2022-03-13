@@ -14,6 +14,7 @@ namespace TE
         }
 
         backend->WindowCloseEvent.AddListener(&Window::OnWindowClose, this);
+        backend->WindowResizeEvent.AddListener(&Window::OnWindowResize, this);
 
         _windowBackend = std::unique_ptr<WindowBackend>(backend);
     }
@@ -48,5 +49,10 @@ namespace TE
     void Window::OnWindowClose()
     {
         WindowCloseEvent();
+    }
+
+    void Window::OnWindowResize(uint32_t width, uint32_t height)
+    {
+        WindowResizeEvent(width, height);
     }
 }

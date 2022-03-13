@@ -20,6 +20,7 @@ namespace TE
         const WindowHandle * const GetWindowHandle() const;
 
         inline static Event<void()> WindowCloseEvent;
+        inline static Event<void(uint32_t, uint32_t)> WindowResizeEvent;
 
     protected:
         std::unique_ptr<WindowHandle> _windowHandle;

@@ -18,10 +18,12 @@ namespace TE
         const WindowBackend * const GetBackend() const;
 
         Event<void()> WindowCloseEvent;
+        Event<void(uint32_t, uint32_t)> WindowResizeEvent;
 
     private:
         std::unique_ptr<WindowBackend> _windowBackend;
 
         void OnWindowClose();
+        void OnWindowResize(uint32_t width, uint32_t height);
     };
 }

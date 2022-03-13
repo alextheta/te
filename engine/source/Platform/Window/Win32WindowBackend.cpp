@@ -59,11 +59,6 @@ namespace TE
 
     LRESULT Win32WindowBackend::WindowProcedure(HWND hWnd, unsigned int msg, WPARAM wparam, LPARAM lparam)
     {
-        if (WindowProcedureOverride != nullptr && WindowProcedureOverride(hWnd, msg, wparam, lparam))
-        {
-            return true;
-        }
-
         switch (msg)
         {
             case WM_DESTROY:
@@ -73,13 +68,19 @@ namespace TE
                 WindowCloseEvent();
                 DestroyWindow(hWnd);
                 break;
+            case WM_SIZE:
+                WindowResizeEvent(LOWORD(lparam), HIWORD(lparam));
+                break;
             default:
+                if (WindowProcedureOverride != nullptr && WindowProcedureOverride(hWnd, msg, wparam, lparam))
+                {
+                    return true;
+                }
                 return DefWindowProc(hWnd, msg, wparam, lparam);
         }
         return 0;
     }
 
-    Win32WindowHandle * const Win32WindowBackend::MakeWindow(WindowSettings &windowSettings)
     Win32WindowHandle *const Win32WindowBackend::MakeWindow(WindowSettings &windowSettings)
     {
         HMODULE hInstance = GetModuleHandle(nullptr);

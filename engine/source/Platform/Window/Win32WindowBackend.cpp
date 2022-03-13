@@ -80,6 +80,7 @@ namespace TE
     }
 
     Win32WindowHandle * const Win32WindowBackend::MakeWindow(WindowSettings &windowSettings)
+    Win32WindowHandle *const Win32WindowBackend::MakeWindow(WindowSettings &windowSettings)
     {
         HMODULE hInstance = GetModuleHandle(nullptr);
         if (!hInstance)
@@ -119,12 +120,22 @@ namespace TE
         auto x = (desktopRect.right / 2) - (windowSettings.width / 2);
         auto y = (desktopRect.bottom / 2) - (windowSettings.height / 2);
 
-        HWND hWindow = CreateWindow(
-                WindowClassName.c_str(),
-                windowSettings.title.c_str(),
-                WS_OVERLAPPEDWINDOW,
-                x, y, windowSettings.width, windowSettings.height,
-                nullptr, nullptr, hInstance, nullptr);
+        RECT adjustedWindowRect;
+        adjustedWindowRect.left = x;
+        adjustedWindowRect.top = y;
+        adjustedWindowRect.right = x + windowSettings.width;
+        adjustedWindowRect.bottom = y + windowSettings.height;
+
+        AdjustWindowRectEx(&adjustedWindowRect, WS_OVERLAPPEDWINDOW, 0, 0);
+
+        auto windowWidth = adjustedWindowRect.right - adjustedWindowRect.left;
+        auto windowHeight = adjustedWindowRect.bottom - adjustedWindowRect.top;
+
+        HWND hWindow = CreateWindow(WindowClassName.c_str(),
+                                    windowSettings.title.c_str(),
+                                    WS_OVERLAPPEDWINDOW,
+                                    x, y, windowWidth, windowHeight,
+                                    nullptr, nullptr, hInstance, nullptr);
 
         if (!hWindow)
         {

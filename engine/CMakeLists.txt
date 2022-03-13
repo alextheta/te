@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(te_engine)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 add_definitions(-DUNICODE -D_UNICODE -DTE_IMPORT)
@@ -56,5 +56,5 @@ file(GLOB SRC_CORE source/Core/*.cpp)
 add_library(${PROJECT_NAME} SHARED ${SRC_CORE})
 
 # static lib
-target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL gl3w imgui window render event engine)
+target_link_libraries(${PROJECT_NAME} PUBLIC OpenGL::GL gl3w window render event engine)
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)

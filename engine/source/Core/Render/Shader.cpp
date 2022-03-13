@@ -26,7 +26,7 @@ namespace TE
             }
         }
 
-        Logger::Message(std::format("Shader \"{}\": unknown render api", name), Logger::Error);
+        Logger::Message(std::format("Shader \"{}\": unknown render API", name), Logger::Error);
         return nullptr;
     }
 }

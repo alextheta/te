@@ -16,7 +16,7 @@ namespace TE
             }
         }
 
-        Logger::Message("IndexBuffer: unknown render api", Logger::Error);
+        Logger::Message("IndexBuffer: unknown render API", Logger::Error);
         return nullptr;
     }
 }
